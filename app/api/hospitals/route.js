@@ -3,6 +3,9 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { haversine, rankHospitals } from '@/lib/haversine';
 import { fetchOSMHospitalsExpanding } from '@/lib/overpass';
+import { redis } from '@/lib/redis';
+
+export const dynamic = 'force-dynamic';
 
 const DATA_PATH = path.join(process.cwd(), 'data', 'hospitals.json');
 
@@ -46,12 +49,36 @@ export async function GET(request) {
       prioritizeAvailability
     );
 
+    // Fetch Redis overrides in parallel for curated ranked hospitals
+    const overrides = await Promise.all(
+      curatedRanked.map(async (h) => {
+        try {
+          const val = await redis.get(`availability:${h.id}`);
+          if (!val) return null;
+          return typeof val === 'string' ? JSON.parse(val) : val;
+        } catch (err) {
+          console.error(`Error reading Redis override for ${h.id}:`, err);
+          return null;
+        }
+      })
+    );
+
+    const curatedWithOverrides = curatedRanked.map((h, index) => {
+      const override = overrides[index];
+      if (!override) return h;
+      return {
+        ...h,
+        availability: override.status || override.availability || h.availability,
+        lastUpdated: override.lastUpdated || h.lastUpdated,
+      };
+    });
+
     // 3. Call fetchOSMHospitalsExpanding(lat, lng)
     const osmHospitals = await fetchOSMHospitalsExpanding(lat, lng);
 
     // 4. Deduplicate: drop any OSM result within 0.3 km of a curated hospital already in results
     const dedupedOSM = osmHospitals.filter((osm) => {
-      return !curatedRanked.some((curated) => {
+      return !curatedWithOverrides.some((curated) => {
         const dist = haversine(osm.lat, osm.lng, curated.lat, curated.lng);
         return dist < 0.3;
       });
@@ -59,7 +86,7 @@ export async function GET(request) {
 
     // 5. Merge both lists and run through existing rankHospitals scoring
     // "Unknown" availability scores like "Limited" in the ranking penalty
-    const merged = [...curatedRanked, ...dedupedOSM];
+    const merged = [...curatedWithOverrides, ...dedupedOSM];
     const results = rankHospitals(merged, lat, lng, null, 30, prioritizeAvailability);
 
     // 6. Count sources in the final results
