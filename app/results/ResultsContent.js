@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -25,12 +25,18 @@ export default function ResultsContent() {
   const specialty = searchParams.get('specialty') || 'Any';
 
   const [hospitals, setHospitals] = useState([]);
+  const [fallbackHospitals, setFallbackHospitals] = useState([]);
+  const [fallbackLabel, setFallbackLabel] = useState(null);
   const [sources, setSources] = useState({ curated: 0, community: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [viewMode, setViewMode] = useState('split'); // 'grid' | 'split' | 'map'
   const [prioritize, setPrioritize] = useState(true);
   const initialLoadDone = useRef(false);
+
+  const allHospitalsForMap = useMemo(() => {
+    return [...hospitals, ...fallbackHospitals];
+  }, [hospitals, fallbackHospitals]);
 
   const fetchHospitals = useCallback(async (isBackground = false) => {
     if (!lat || !lng) {
@@ -44,7 +50,9 @@ export default function ResultsContent() {
       const res = await fetch(url);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to fetch hospitals');
-      setHospitals(data.results);
+      setHospitals(data.results || []);
+      setFallbackHospitals(data.fallbackResults || []);
+      setFallbackLabel(data.fallbackLabel || null);
       if (data.sources) setSources(data.sources);
     } catch (err) {
       if (!isBackground) setError(err.message);
@@ -154,15 +162,45 @@ export default function ResultsContent() {
           <>
             {/* Grid view — cards only */}
             {viewMode === 'grid' && (
-              <div className="results-grid fade-in">
-                {hospitals.length === 0 ? (
+              <div className="fade-in">
+                {hospitals.length === 0 && fallbackHospitals.length === 0 ? (
                   <EmptyResults specialty={specialty} />
                 ) : (
-                  hospitals.map((h, i) => (
-                    <div key={h.id} className="fade-in" style={{ animationDelay: `${Math.min(i * 0.03, 0.4)}s`, opacity: 0 }}>
-                      <HospitalCard hospital={h} />
-                    </div>
-                  ))
+                  <>
+                    {hospitals.length > 0 && (
+                      <div className="results-grid">
+                        {hospitals.map((h, i) => (
+                          <div key={h.id} className="fade-in" style={{ animationDelay: `${Math.min(i * 0.03, 0.4)}s`, opacity: 0 }}>
+                            <HospitalCard hospital={h} />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Separate Fallback Section for OSM/General Hospitals */}
+                    {fallbackHospitals.length > 0 && (
+                      <div className="fallback-section fade-in">
+                        <div className="fallback-banner">
+                          <div className="fallback-banner-header">
+                            <AlertTriangle size={16} className="fallback-icon" />
+                            <h2 className="fallback-title">
+                              {fallbackLabel || 'Nearby general hospitals (specialty not confirmed)'}
+                            </h2>
+                          </div>
+                          <p className="fallback-subtitle">
+                            Fewer than 3 verified {specialty !== 'Any' ? specialty : ''} hospitals found nearby. The following community-reported facilities may offer emergency stabilization:
+                          </p>
+                        </div>
+                        <div className="results-grid">
+                          {fallbackHospitals.map((h, i) => (
+                            <div key={h.id} className="fade-in" style={{ animationDelay: `${Math.min(i * 0.03, 0.4)}s`, opacity: 0 }}>
+                              <HospitalCard hospital={h} />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             )}
@@ -171,19 +209,45 @@ export default function ResultsContent() {
             {viewMode === 'split' && (
               <div className="split-view fade-in">
                 <div className="split-cards">
-                  {hospitals.length === 0 ? (
+                  {hospitals.length === 0 && fallbackHospitals.length === 0 ? (
                     <EmptyResults specialty={specialty} />
                   ) : (
-                    hospitals.map((h, i) => (
-                      <div key={h.id} className="fade-in" style={{ animationDelay: `${Math.min(i * 0.03, 0.4)}s`, opacity: 0 }}>
-                        <HospitalCard hospital={h} />
-                      </div>
-                    ))
+                    <>
+                      {hospitals.map((h, i) => (
+                        <div key={h.id} className="fade-in" style={{ animationDelay: `${Math.min(i * 0.03, 0.4)}s`, opacity: 0 }}>
+                          <HospitalCard hospital={h} />
+                        </div>
+                      ))}
+
+                      {/* Separate Fallback Section for OSM/General Hospitals */}
+                      {fallbackHospitals.length > 0 && (
+                        <div className="fallback-section fade-in">
+                          <div className="fallback-banner">
+                            <div className="fallback-banner-header">
+                              <AlertTriangle size={16} className="fallback-icon" />
+                              <h2 className="fallback-title">
+                                {fallbackLabel || 'Nearby general hospitals (specialty not confirmed)'}
+                              </h2>
+                            </div>
+                            <p className="fallback-subtitle">
+                              Fewer than 3 verified {specialty !== 'Any' ? specialty : ''} hospitals found nearby. The following community-reported facilities may offer emergency stabilization:
+                            </p>
+                          </div>
+                          <div className="fallback-card-list">
+                            {fallbackHospitals.map((h, i) => (
+                              <div key={h.id} className="fade-in" style={{ animationDelay: `${Math.min(i * 0.03, 0.4)}s`, opacity: 0 }}>
+                                <HospitalCard hospital={h} />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
                 <div className="split-map">
                   <HospitalMap
-                    hospitals={hospitals}
+                    hospitals={allHospitalsForMap}
                     userLat={parseFloat(lat)}
                     userLng={parseFloat(lng)}
                   />
@@ -195,7 +259,7 @@ export default function ResultsContent() {
             {viewMode === 'map' && (
               <div className="map-full fade-in">
                 <HospitalMap
-                  hospitals={hospitals}
+                  hospitals={allHospitalsForMap}
                   userLat={parseFloat(lat)}
                   userLng={parseFloat(lng)}
                 />
@@ -384,6 +448,46 @@ export default function ResultsContent() {
         /* Map full view */
         .map-full {
           margin-bottom: var(--space-xl);
+        }
+
+        /* Fallback section */
+        .fallback-section {
+          margin-top: var(--space-xl);
+          padding-top: var(--space-lg);
+          border-top: 1px dashed var(--border-subtle);
+          width: 100%;
+        }
+        .fallback-banner {
+          background: #FFFBEB;
+          border: 1px solid #FDE68A;
+          border-radius: var(--radius-md);
+          padding: var(--space-md);
+          margin-bottom: var(--space-md);
+        }
+        .fallback-banner-header {
+          display: flex;
+          align-items: center;
+          gap: var(--space-xs);
+        }
+        :global(.fallback-icon) {
+          color: #D97706;
+          flex-shrink: 0;
+        }
+        .fallback-title {
+          font-size: 0.9375rem;
+          font-weight: 700;
+          color: #92400E;
+          margin: 0;
+        }
+        .fallback-subtitle {
+          font-size: 0.8125rem;
+          color: #B45309;
+          margin-top: 4px;
+        }
+        .fallback-card-list {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-md);
         }
 
         @media (max-width: 900px) {
