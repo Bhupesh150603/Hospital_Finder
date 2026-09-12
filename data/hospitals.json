@@ -1,0 +1,1599 @@
+[
+  {
+    "id": "del1",
+    "name": "AIIMS New Delhi",
+    "lat": 28.5672,
+    "lng": 77.21,
+    "phone": "+91-11-26588500",
+    "specialties": [
+      "Trauma",
+      "Cardiac",
+      "ICU",
+      "Burns",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T15:11:43.065Z"
+  },
+  {
+    "id": "del2",
+    "name": "Safdarjung Hospital, Delhi",
+    "lat": 28.5685,
+    "lng": 77.2066,
+    "phone": "+91-11-26707437",
+    "specialties": [
+      "Trauma",
+      "Pediatric",
+      "Maternity",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "del3",
+    "name": "Sir Ganga Ram Hospital, Delhi",
+    "lat": 28.6382,
+    "lng": 77.1912,
+    "phone": "+91-11-25861002",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Pediatric",
+      "Burns",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "del4",
+    "name": "Max Super Speciality Hospital, Saket",
+    "lat": 28.5274,
+    "lng": 77.216,
+    "phone": "+91-11-26515050",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Trauma",
+      "Dialysis"
+    ],
+    "availability": "Full",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "del5",
+    "name": "Fortis Escorts Heart Institute, Delhi",
+    "lat": 28.5493,
+    "lng": 77.2227,
+    "phone": "+91-11-47135000",
+    "specialties": [
+      "Cardiac",
+      "ICU"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "del6",
+    "name": "Lok Nayak Hospital (LNJP), Delhi",
+    "lat": 28.6352,
+    "lng": 77.2389,
+    "phone": "+91-11-23232400",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity"
+    ],
+    "availability": "Full",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "del7",
+    "name": "Apollo Hospital, Jasola, Delhi",
+    "lat": 28.5355,
+    "lng": 77.2816,
+    "phone": "+91-11-71791090",
+    "specialties": [
+      "Trauma",
+      "Cardiac",
+      "Pediatric",
+      "Burns",
+      "Maternity",
+      "Dialysis",
+      "ICU"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "gur1",
+    "name": "Medanta - The Medicity, Gurugram",
+    "lat": 28.4398,
+    "lng": 77.0422,
+    "phone": "+91-124-4141414",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Trauma",
+      "Pediatric",
+      "Burns",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "noi1",
+    "name": "Fortis Hospital, Noida",
+    "lat": 28.569,
+    "lng": 77.3248,
+    "phone": "+91-120-4300222",
+    "specialties": [
+      "Cardiac",
+      "Pediatric",
+      "ICU",
+      "Maternity"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "mum1",
+    "name": "KEM Hospital, Mumbai",
+    "lat": 19.0003,
+    "lng": 72.8416,
+    "phone": "+91-22-24136051",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "mum2",
+    "name": "Lilavati Hospital, Mumbai",
+    "lat": 19.0509,
+    "lng": 72.8294,
+    "phone": "+91-22-26568000",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "mum3",
+    "name": "Kokilaben Hospital, Mumbai",
+    "lat": 19.131,
+    "lng": 72.8254,
+    "phone": "+91-30999999",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Pediatric",
+      "Maternity",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "mum4",
+    "name": "Hinduja Hospital, Mumbai",
+    "lat": 19.0372,
+    "lng": 72.8411,
+    "phone": "+91-22-24447777",
+    "specialties": [
+      "Trauma",
+      "Burns",
+      "ICU",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "pun1",
+    "name": "Sassoon General Hospital, Pune",
+    "lat": 18.5292,
+    "lng": 73.8693,
+    "phone": "+91-20-26128000",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "pun2",
+    "name": "Ruby Hall Clinic, Pune",
+    "lat": 18.5297,
+    "lng": 73.8863,
+    "phone": "+91-20-66455100",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Trauma",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "nag1",
+    "name": "Government Medical College, Nagpur",
+    "lat": 21.151,
+    "lng": 79.0779,
+    "phone": "+91-712-2724386",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "nag2",
+    "name": "Orange City Hospital, Nagpur",
+    "lat": 21.1399,
+    "lng": 79.073,
+    "phone": "+91-712-2735001",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "blr1",
+    "name": "Narayana Health City, Bangalore",
+    "lat": 12.8178,
+    "lng": 77.674,
+    "phone": "+91-80-71222222",
+    "specialties": [
+      "Cardiac",
+      "Pediatric",
+      "ICU",
+      "Dialysis",
+      "Burns"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "blr2",
+    "name": "Manipal Hospital, Bangalore",
+    "lat": 12.9597,
+    "lng": 77.6442,
+    "phone": "+91-80-25024444",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Cardiac",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "blr3",
+    "name": "Apollo Hospital, Bangalore",
+    "lat": 12.893,
+    "lng": 77.5966,
+    "phone": "+91-80-26304050",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "mng1",
+    "name": "KMC Hospital, Mangalore",
+    "lat": 12.8715,
+    "lng": 74.8426,
+    "phone": "+91-824-2445858",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "hub1",
+    "name": "KIMS Hospital, Hubballi",
+    "lat": 15.3585,
+    "lng": 75.1276,
+    "phone": "+91-836-2222444",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "chn1",
+    "name": "Apollo Hospital, Chennai",
+    "lat": 13.0607,
+    "lng": 80.255,
+    "phone": "+91-44-28290200",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Pediatric",
+      "Maternity",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "chn2",
+    "name": "MIOT International, Chennai",
+    "lat": 13.0115,
+    "lng": 80.1748,
+    "phone": "+91-44-42002288",
+    "specialties": [
+      "Trauma",
+      "Burns",
+      "ICU",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "chn3",
+    "name": "Rajiv Gandhi Govt Hospital, Chennai",
+    "lat": 13.0571,
+    "lng": 80.2777,
+    "phone": "+91-44-25305000",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Full",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "coi1",
+    "name": "PSG Hospital, Coimbatore",
+    "lat": 11.0209,
+    "lng": 76.9552,
+    "phone": "+91-422-2570170",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Dialysis",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "mad1",
+    "name": "Govt Rajaji Hospital, Madurai",
+    "lat": 9.9212,
+    "lng": 78.1208,
+    "phone": "+91-452-2532535",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "tri1",
+    "name": "JIPMER, Puducherry",
+    "lat": 11.9592,
+    "lng": 79.7979,
+    "phone": "+91-413-2272380",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "kol1",
+    "name": "SSKM Hospital, Kolkata",
+    "lat": 22.5389,
+    "lng": 88.3445,
+    "phone": "+91-33-22041920",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "kol2",
+    "name": "Apollo Gleneagles, Kolkata",
+    "lat": 22.517,
+    "lng": 88.3986,
+    "phone": "+91-33-23203040",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Trauma",
+      "Dialysis",
+      "Maternity"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "kol3",
+    "name": "Fortis Hospital, Kolkata",
+    "lat": 22.5117,
+    "lng": 88.4089,
+    "phone": "+91-33-66284444",
+    "specialties": [
+      "Cardiac",
+      "Pediatric",
+      "ICU",
+      "Burns"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "hyd1",
+    "name": "Apollo Hospital, Hyderabad",
+    "lat": 17.4256,
+    "lng": 78.4085,
+    "phone": "+91-40-23607777",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Pediatric",
+      "Maternity",
+      "Dialysis",
+      "Burns"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "hyd2",
+    "name": "KIMS Hospital, Hyderabad",
+    "lat": 17.4416,
+    "lng": 78.4983,
+    "phone": "+91-40-44885000",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Trauma",
+      "Burns",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "hyd3",
+    "name": "Yashoda Hospital, Hyderabad",
+    "lat": 17.4291,
+    "lng": 78.45,
+    "phone": "+91-40-45674567",
+    "specialties": [
+      "Cardiac",
+      "Pediatric",
+      "ICU",
+      "Maternity"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "hyd4",
+    "name": "Osmania General Hospital, Hyderabad",
+    "lat": 17.377,
+    "lng": 78.475,
+    "phone": "+91-40-24600146",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Full",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "ahm1",
+    "name": "Civil Hospital, Ahmedabad",
+    "lat": 23.0334,
+    "lng": 72.586,
+    "phone": "+91-79-22680731",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "ahm2",
+    "name": "Sterling Hospital, Ahmedabad",
+    "lat": 23.0377,
+    "lng": 72.5144,
+    "phone": "+91-79-40011111",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Trauma",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "srt1",
+    "name": "SMIMER Hospital, Surat",
+    "lat": 21.1886,
+    "lng": 72.841,
+    "phone": "+91-261-2244456",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "raj1",
+    "name": "Rajkot Civil Hospital",
+    "lat": 22.291,
+    "lng": 70.7985,
+    "phone": "+91-281-2222471",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "vad1",
+    "name": "SSG Hospital, Vadodara",
+    "lat": 22.3124,
+    "lng": 73.1879,
+    "phone": "+91-265-2427171",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "jai1",
+    "name": "SMS Hospital, Jaipur",
+    "lat": 26.902,
+    "lng": 75.8047,
+    "phone": "+91-141-2518200",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "jai2",
+    "name": "Fortis Escorts Hospital, Jaipur",
+    "lat": 26.8481,
+    "lng": 75.8059,
+    "phone": "+91-141-2547000",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Trauma"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "jdh1",
+    "name": "MDM Hospital, Jodhpur",
+    "lat": 26.2854,
+    "lng": 73.0169,
+    "phone": "+91-291-2636300",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "udp1",
+    "name": "MB Government Hospital, Udaipur",
+    "lat": 24.5854,
+    "lng": 73.7125,
+    "phone": "+91-294-2528811",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "bkn1",
+    "name": "PBM Hospital, Bikaner",
+    "lat": 28.026,
+    "lng": 73.3119,
+    "phone": "+91-151-2223317",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "lko1",
+    "name": "KGMU, Lucknow",
+    "lat": 26.8532,
+    "lng": 80.9385,
+    "phone": "+91-522-2257540",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "lko2",
+    "name": "Medanta Hospital, Lucknow",
+    "lat": 26.8515,
+    "lng": 80.95,
+    "phone": "+91-522-4505050",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Trauma",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "vrn1",
+    "name": "BHU Hospital (Sir Sunderlal), Varanasi",
+    "lat": 25.2797,
+    "lng": 83.0037,
+    "phone": "+91-542-2307511",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric",
+      "Cardiac",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "agr1",
+    "name": "SN Medical College, Agra",
+    "lat": 27.1946,
+    "lng": 78.0016,
+    "phone": "+91-562-2260226",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "alg1",
+    "name": "MLN Medical College, Prayagraj",
+    "lat": 25.441,
+    "lng": 81.8497,
+    "phone": "+91-532-2256913",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "gor1",
+    "name": "BRD Medical College, Gorakhpur",
+    "lat": 26.7688,
+    "lng": 83.3826,
+    "phone": "+91-551-2500633",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Pediatric",
+      "Maternity"
+    ],
+    "availability": "Full",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "pat1",
+    "name": "PMCH, Patna",
+    "lat": 25.6152,
+    "lng": 85.1534,
+    "phone": "+91-612-2300343",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "pat2",
+    "name": "AIIMS Patna",
+    "lat": 25.6108,
+    "lng": 85.0888,
+    "phone": "+91-612-2451070",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "gya1",
+    "name": "ANM Medical College, Gaya",
+    "lat": 24.7866,
+    "lng": 85.0102,
+    "phone": "+91-631-2220244",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "bpl1",
+    "name": "AIIMS Bhopal",
+    "lat": 23.2076,
+    "lng": 77.4462,
+    "phone": "+91-755-2672301",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Pediatric",
+      "Dialysis",
+      "Maternity"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "bpl2",
+    "name": "Hamidia Hospital, Bhopal",
+    "lat": 23.2588,
+    "lng": 77.4126,
+    "phone": "+91-755-2540222",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "ind1",
+    "name": "MY Hospital, Indore",
+    "lat": 22.7169,
+    "lng": 75.8514,
+    "phone": "+91-731-2527383",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "jbp1",
+    "name": "NSCB Medical College, Jabalpur",
+    "lat": 23.1718,
+    "lng": 79.944,
+    "phone": "+91-761-2620914",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "gwl1",
+    "name": "Gajra Raja Medical College, Gwalior",
+    "lat": 26.2112,
+    "lng": 78.1746,
+    "phone": "+91-751-2340362",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "chd1",
+    "name": "PGIMER, Chandigarh",
+    "lat": 30.7638,
+    "lng": 76.7748,
+    "phone": "+91-172-2747585",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "chd2",
+    "name": "GMCH Sector 32, Chandigarh",
+    "lat": 30.7407,
+    "lng": 76.7673,
+    "phone": "+91-172-2665253",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "ldh1",
+    "name": "DMC Hospital, Ludhiana",
+    "lat": 30.9167,
+    "lng": 75.8449,
+    "phone": "+91-161-2302620",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "asr1",
+    "name": "Guru Nanak Dev Hospital, Amritsar",
+    "lat": 31.627,
+    "lng": 74.8576,
+    "phone": "+91-183-2228801",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "koc1",
+    "name": "Amrita Hospital, Kochi",
+    "lat": 10.029,
+    "lng": 76.3008,
+    "phone": "+91-484-2851234",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Pediatric",
+      "Dialysis",
+      "Maternity"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "koc2",
+    "name": "Lakeshore Hospital, Kochi",
+    "lat": 9.992,
+    "lng": 76.308,
+    "phone": "+91-484-2701032",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "tvm1",
+    "name": "Medical College Hospital, Thiruvananthapuram",
+    "lat": 8.5072,
+    "lng": 76.9459,
+    "phone": "+91-471-2528386",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "cal1",
+    "name": "Govt Medical College, Kozhikode",
+    "lat": 11.2506,
+    "lng": 75.7833,
+    "phone": "+91-495-2350216",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "thr1",
+    "name": "Govt Medical College, Thrissur",
+    "lat": 10.5286,
+    "lng": 76.2103,
+    "phone": "+91-487-2200310",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "guw1",
+    "name": "GMCH Guwahati",
+    "lat": 26.1637,
+    "lng": 91.7362,
+    "phone": "+91-361-2529457",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "guw2",
+    "name": "Nemcare Hospital, Guwahati",
+    "lat": 26.1393,
+    "lng": 91.7789,
+    "phone": "+91-361-2132222",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Trauma",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "dib1",
+    "name": "Assam Medical College, Dibrugarh",
+    "lat": 27.4608,
+    "lng": 94.9049,
+    "phone": "+91-373-2300080",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "sil1",
+    "name": "Silchar Medical College",
+    "lat": 24.8149,
+    "lng": 92.7882,
+    "phone": "+91-3842-240891",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "imp1",
+    "name": "RIMS, Imphal",
+    "lat": 24.8074,
+    "lng": 93.9369,
+    "phone": "+91-385-2414654",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "shi1",
+    "name": "NEIGRIHMS, Shillong",
+    "lat": 25.5699,
+    "lng": 91.8933,
+    "phone": "+91-364-2538030",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "agt1",
+    "name": "GBP Hospital, Agartala",
+    "lat": 23.8354,
+    "lng": 91.2802,
+    "phone": "+91-381-2325271",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "aiz1",
+    "name": "Civil Hospital, Aizawl",
+    "lat": 23.7271,
+    "lng": 92.7176,
+    "phone": "+91-389-2341255",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "koh1",
+    "name": "Naga Hospital, Kohima",
+    "lat": 25.6701,
+    "lng": 94.1186,
+    "phone": "+91-370-2290234",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "ita1",
+    "name": "TRIHMS, Naharlagun, Arunachal",
+    "lat": 27.105,
+    "lng": 93.694,
+    "phone": "+91-360-2244690",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "gan1",
+    "name": "STNM Hospital, Gangtok",
+    "lat": 27.3267,
+    "lng": 88.6161,
+    "phone": "+91-3592-222268",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "bbs1",
+    "name": "SCB Medical College, Cuttack",
+    "lat": 20.4721,
+    "lng": 85.8829,
+    "phone": "+91-671-2414080",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "bbs2",
+    "name": "AIIMS Bhubaneswar",
+    "lat": 20.249,
+    "lng": 85.8005,
+    "phone": "+91-674-2476222",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "rkl1",
+    "name": "Ispat General Hospital, Rourkela",
+    "lat": 22.256,
+    "lng": 84.8648,
+    "phone": "+91-661-2640880",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "ran1",
+    "name": "RIMS, Ranchi",
+    "lat": 23.3537,
+    "lng": 85.328,
+    "phone": "+91-651-2545555",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "ran2",
+    "name": "Medica Superspecialty Hospital, Ranchi",
+    "lat": 23.3471,
+    "lng": 85.3387,
+    "phone": "+91-651-2562222",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Trauma",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "jam1",
+    "name": "Tata Main Hospital, Jamshedpur",
+    "lat": 22.801,
+    "lng": 86.1991,
+    "phone": "+91-657-2345001",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Cardiac",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "rai1",
+    "name": "AIIMS Raipur",
+    "lat": 21.2173,
+    "lng": 81.6945,
+    "phone": "+91-771-2573777",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "rai2",
+    "name": "Pt JNM Medical College, Raipur",
+    "lat": 21.2458,
+    "lng": 81.628,
+    "phone": "+91-771-2523300",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "blp1",
+    "name": "CIMS, Bilaspur",
+    "lat": 22.0735,
+    "lng": 82.1468,
+    "phone": "+91-7752-410001",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "ddn1",
+    "name": "AIIMS Rishikesh",
+    "lat": 30.067,
+    "lng": 78.2843,
+    "phone": "+91-135-2462940",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Pediatric",
+      "Dialysis",
+      "Maternity"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "ddn2",
+    "name": "Doon Hospital, Dehradun",
+    "lat": 30.3248,
+    "lng": 78.052,
+    "phone": "+91-135-2712002",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "hld1",
+    "name": "Dr Sushila Tiwari Hospital, Haldwani",
+    "lat": 29.2186,
+    "lng": 79.5192,
+    "phone": "+91-5946-220042",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "vsp1",
+    "name": "KGH, Visakhapatnam",
+    "lat": 17.7068,
+    "lng": 83.3008,
+    "phone": "+91-891-2564891",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "vsp2",
+    "name": "CARE Hospital, Visakhapatnam",
+    "lat": 17.7342,
+    "lng": 83.3213,
+    "phone": "+91-891-3041222",
+    "specialties": [
+      "Cardiac",
+      "ICU",
+      "Trauma",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "tpt1",
+    "name": "SVIMS, Tirupati",
+    "lat": 13.6375,
+    "lng": 79.4098,
+    "phone": "+91-877-2287777",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric",
+      "Dialysis"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "vnw1",
+    "name": "Govt General Hospital, Vijayawada",
+    "lat": 16.5098,
+    "lng": 80.6368,
+    "phone": "+91-866-2578999",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "jmu1",
+    "name": "GMC Jammu",
+    "lat": 32.7197,
+    "lng": 74.8571,
+    "phone": "+91-191-2584241",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "srn1",
+    "name": "SKIMS, Srinagar",
+    "lat": 34.144,
+    "lng": 74.82,
+    "phone": "+91-194-2401013",
+    "specialties": [
+      "Cardiac",
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Dialysis"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "leh1",
+    "name": "SNM Hospital, Leh",
+    "lat": 34.1526,
+    "lng": 77.5771,
+    "phone": "+91-1982-252012",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "goa1",
+    "name": "Goa Medical College, Bambolim",
+    "lat": 15.4571,
+    "lng": 73.8689,
+    "phone": "+91-832-2458727",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric",
+      "Cardiac"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "sim1",
+    "name": "IGMC, Shimla",
+    "lat": 31.1053,
+    "lng": 77.1693,
+    "phone": "+91-177-2804251",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Burns",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Limited",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  },
+  {
+    "id": "man1",
+    "name": "Dr RPGMC, Kangra (Tanda)",
+    "lat": 32.054,
+    "lng": 76.2753,
+    "phone": "+91-1892-267115",
+    "specialties": [
+      "Trauma",
+      "ICU",
+      "Maternity",
+      "Pediatric"
+    ],
+    "availability": "Available",
+    "lastUpdated": "2026-09-12T14:03:01.970Z"
+  }
+]
