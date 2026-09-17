@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Phone, Search, Clock, ChevronLeft, ChevronRight, CheckCircle2, AlertCircle, AlertTriangle } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 
 const STATUSES = ['Available', 'Limited', 'Full'];
 const ITEMS_PER_PAGE = 6;
@@ -121,7 +122,7 @@ export default function AdminPage() {
     return hospitals.filter(
       (h) =>
         h.name.toLowerCase().includes(q) ||
-        (h.specialties && h.specialties.some((s) => s.toLowerCase().includes(q)))
+        (h.specialties && h.specialties.some((s) => s.name.toLowerCase().includes(q)))
     );
   }, [hospitals, searchQuery]);
 
@@ -140,11 +141,17 @@ export default function AdminPage() {
     <main className="admin-page">
       <div className="container">
         {/* Eyebrow badge */}
-        <div className="admin-eyebrow fade-in">
+        <div className="admin-eyebrow fade-in" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span className="live-sync-pill">
             <span className="live-dot-pulse"></span>
             Live Sync Enabled
           </span>
+          <button
+            onClick={() => signOut({ callbackUrl: '/admin/login' })}
+            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '0.8125rem', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
+          >
+            Sign out
+          </button>
         </div>
 
         {/* Header & Metrics */}
@@ -243,8 +250,8 @@ export default function AdminPage() {
                       {/* Specialties */}
                       <div className="admin-card-specialties">
                         {h.specialties.map((spec) => (
-                          <span key={spec} className="admin-spec-pill">
-                            {spec}
+                          <span key={spec.name} className="admin-spec-pill">
+                            {spec.name}
                           </span>
                         ))}
                       </div>

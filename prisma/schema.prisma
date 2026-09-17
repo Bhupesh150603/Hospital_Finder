@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model Hospital {
+  id        String   @id @default(cuid())
+  name      String
+  lat       Float
+  lng       Float
+  phone     String?
+  address   String?
+  source    String   @default("curated")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  specialties HospitalSpecialty[]
+  admins      AdminUser[]
+
+  @@index([lat, lng])
+}
+
+model Specialty {
+  id   String @id @default(cuid())
+  name String @unique
+
+  hospitals HospitalSpecialty[]
+}
+
+model HospitalSpecialty {
+  id                 String   @id @default(cuid())
+  hospitalId         String
+  specialtyId        String
+  availabilityStatus String   @default("Unknown")
+  lastUpdated        DateTime @default(now())
+
+  hospital  Hospital  @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  specialty Specialty @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
+  history   AvailabilityHistory[]
+
+  @@unique([hospitalId, specialtyId])
+  @@index([specialtyId, availabilityStatus])
+}
+
+model AvailabilityHistory {
+  id                  String   @id @default(cuid())
+  hospitalSpecialtyId String
+  previousStatus      String
+  newStatus            String
+  changedAt           DateTime @default(now())
+  changedByAdminId    String?
+
+  hospitalSpecialty HospitalSpecialty @relation(fields: [hospitalSpecialtyId], references: [id], onDelete: Cascade)
+  changedByAdmin    AdminUser?        @relation(fields: [changedByAdminId], references: [id])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String?
+  hospitalId   String
+  createdAt    DateTime @default(now())
+
+  hospital Hospital              @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
+  changes  AvailabilityHistory[]
+}

@@ -1,62 +1,72 @@
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
-import { redis } from '@/lib/redis';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-const DATA_PATH = path.join(process.cwd(), 'data', 'hospitals.json');
+const STATUS_PRIORITY = { Available: 0, Limited: 1, Full: 2, Unknown: 3 };
 
-/**
- * GET /api/admin — return all hospitals (for the admin panel)
- * Merges static hospital list with Redis availability overrides.
- */
+function pickRepresentative(hospitalSpecialties) {
+  if (!hospitalSpecialties || hospitalSpecialties.length === 0) {
+    return { availability: 'Unknown', lastUpdated: null };
+  }
+  const best = [...hospitalSpecialties].sort(
+    (a, b) => (STATUS_PRIORITY[a.availabilityStatus] ?? 3) - (STATUS_PRIORITY[b.availabilityStatus] ?? 3)
+  )[0];
+  return { availability: best.availabilityStatus, lastUpdated: best.lastUpdated };
+}
+
+/** GET /api/admin — list ONLY the logged-in admin's own hospital */
 export async function GET() {
   try {
-    const rawData = await fs.readFile(DATA_PATH, 'utf-8');
-    const hospitals = JSON.parse(rawData);
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.hospitalId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-    // Fetch Redis overrides in parallel for each hospital
-    const overrides = await Promise.all(
-      hospitals.map(async (h) => {
-        try {
-          const val = await redis.get(`availability:${h.id}`);
-          if (!val) return null;
-          return typeof val === 'string' ? JSON.parse(val) : val;
-        } catch (err) {
-          console.error(`Error reading Redis override for ${h.id}:`, err);
-          return null;
-        }
-      })
-    );
+    const hospitals = await prisma.hospital.findMany({
+      where: { id: session.user.hospitalId },
+      include: { specialties: { include: { specialty: true } } },
+      orderBy: { name: 'asc' },
+    });
 
-    const mergedHospitals = hospitals.map((h, index) => {
-      const override = overrides[index];
-      if (!override) return h;
+    const shaped = hospitals.map((h) => {
+      const specialties = h.specialties.map((hs) => ({
+        name: hs.specialty.name,
+        availability: hs.availabilityStatus,
+        lastUpdated: hs.lastUpdated,
+      }));
+      const rep = pickRepresentative(h.specialties);
       return {
-        ...h,
-        availability: override.status || override.availability || h.availability,
-        lastUpdated: override.lastUpdated || h.lastUpdated,
+        id: h.id,
+        name: h.name,
+        phone: h.phone,
+        availability: rep.availability,
+        lastUpdated: rep.lastUpdated,
+        specialties,
       };
     });
 
-    return NextResponse.json({ hospitals: mergedHospitals });
+    return NextResponse.json({ hospitals: shaped });
   } catch (err) {
     console.error('GET /api/admin error:', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
-/**
- * PATCH /api/admin — update a hospital's availability
- * Body: { id: "del1", availability: "Available" | "Limited" | "Full" }
- * Stores the update in Redis under key `availability:${hospitalId}`.
- */
+/** PATCH /api/admin — update availability, ONLY for the hospital the logged-in admin owns */
 export async function PATCH(request) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.hospitalId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await request.json();
     const hospitalId = body.id || body.hospitalId;
     const status = body.availability || body.status;
+    const specialtyName = body.specialty || null;
 
     if (!hospitalId || !['Available', 'Limited', 'Full'].includes(status)) {
       return NextResponse.json(
@@ -65,29 +75,57 @@ export async function PATCH(request) {
       );
     }
 
-    const rawData = await fs.readFile(DATA_PATH, 'utf-8');
-    const hospitals = JSON.parse(rawData);
+    if (hospitalId !== session.user.hospitalId) {
+      return NextResponse.json(
+        { error: 'Forbidden: you can only update your own hospital' },
+        { status: 403 }
+      );
+    }
 
-    const hospital = hospitals.find((h) => h.id === hospitalId);
+    const hospital = await prisma.hospital.findUnique({
+      where: { id: hospitalId },
+      include: { specialties: { include: { specialty: true } } },
+    });
+
     if (!hospital) {
       return NextResponse.json({ error: `Hospital with id "${hospitalId}" not found` }, { status: 404 });
     }
 
-    const lastUpdated = new Date().toISOString();
-    const payload = {
-      status,
-      lastUpdated,
-    };
+    const rowsToUpdate = specialtyName
+      ? hospital.specialties.filter((hs) => hs.specialty.name === specialtyName)
+      : hospital.specialties;
 
-    // Store in Redis with key availability:${hospitalId} as a JSON string
-    await redis.set(`availability:${hospitalId}`, JSON.stringify(payload));
+    if (rowsToUpdate.length === 0) {
+      return NextResponse.json({ error: `Specialty "${specialtyName}" not found for this hospital` }, { status: 404 });
+    }
+
+    const lastUpdated = new Date();
+
+    for (const row of rowsToUpdate) {
+      await prisma.$transaction([
+        prisma.availabilityHistory.create({
+          data: {
+            hospitalSpecialtyId: row.id,
+            previousStatus: row.availabilityStatus,
+            newStatus: status,
+            changedByAdminId: session.user.id,
+          },
+        }),
+        prisma.hospitalSpecialty.update({
+          where: { id: row.id },
+          data: { availabilityStatus: status, lastUpdated },
+        }),
+      ]);
+    }
 
     return NextResponse.json({
       message: 'Availability updated',
       hospital: {
-        ...hospital,
+        id: hospital.id,
+        name: hospital.name,
+        updatedSpecialties: rowsToUpdate.map((r) => r.specialty.name),
         availability: status,
-        lastUpdated,
+        lastUpdated: lastUpdated.toISOString(),
       },
     });
   } catch (err) {
