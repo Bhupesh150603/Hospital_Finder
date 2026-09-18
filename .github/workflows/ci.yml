@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'feature/**']
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql://user:pass@localhost:5432/placeholder"
+      DATABASE_URL_UNPOOLED: "postgresql://user:pass@localhost:5432/placeholder"
+      NEXTAUTH_SECRET: "ci-placeholder-secret-never-used-for-real-auth"
+      NEXTAUTH_URL: "http://localhost:3000"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies (exact, reproducible)
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build

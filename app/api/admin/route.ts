@@ -1,20 +1,38 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import type { AvailabilityStatus } from '@/lib/haversine';
 
 export const dynamic = 'force-dynamic';
 
-const STATUS_PRIORITY = { Available: 0, Limited: 1, Full: 2, Unknown: 3 };
+const STATUS_PRIORITY: Record<AvailabilityStatus, number> = {
+  Available: 0,
+  Limited: 1,
+  Full: 2,
+  Unknown: 3,
+};
 
-function pickRepresentative(hospitalSpecialties) {
+interface SpecialtyRow {
+  id: string;
+  specialty: { name: string };
+  availabilityStatus: string;
+  lastUpdated: Date;
+}
+
+function pickRepresentative(hospitalSpecialties: SpecialtyRow[] | undefined) {
   if (!hospitalSpecialties || hospitalSpecialties.length === 0) {
-    return { availability: 'Unknown', lastUpdated: null };
+    return { availability: 'Unknown' as AvailabilityStatus, lastUpdated: null as Date | null };
   }
   const best = [...hospitalSpecialties].sort(
-    (a, b) => (STATUS_PRIORITY[a.availabilityStatus] ?? 3) - (STATUS_PRIORITY[b.availabilityStatus] ?? 3)
+    (a, b) =>
+      (STATUS_PRIORITY[a.availabilityStatus as AvailabilityStatus] ?? 3) -
+      (STATUS_PRIORITY[b.availabilityStatus as AvailabilityStatus] ?? 3)
   )[0];
-  return { availability: best.availabilityStatus, lastUpdated: best.lastUpdated };
+  return {
+    availability: best.availabilityStatus as AvailabilityStatus,
+    lastUpdated: best.lastUpdated as Date | null,
+  };
 }
 
 /** GET /api/admin — list ONLY the logged-in admin's own hospital */
@@ -55,20 +73,28 @@ export async function GET() {
   }
 }
 
+interface PatchBody {
+  id?: string;
+  hospitalId?: string;
+  availability?: string;
+  status?: string;
+  specialty?: string;
+}
+
 /** PATCH /api/admin — update availability, ONLY for the hospital the logged-in admin owns */
-export async function PATCH(request) {
+export async function PATCH(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.hospitalId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const body: PatchBody = await request.json();
     const hospitalId = body.id || body.hospitalId;
     const status = body.availability || body.status;
     const specialtyName = body.specialty || null;
 
-    if (!hospitalId || !['Available', 'Limited', 'Full'].includes(status)) {
+    if (!hospitalId || !status || !['Available', 'Limited', 'Full'].includes(status)) {
       return NextResponse.json(
         { error: 'Invalid id or availability value. Must be Available, Limited, or Full.' },
         { status: 400 }

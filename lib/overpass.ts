@@ -1,11 +1,47 @@
+import type { HospitalLike } from './haversine';
+
 /**
  * Overpass API client — fetches real hospitals from OpenStreetMap.
  * Used to supplement the curated hospitals.json with live OSM data
  * so the app works ANYWHERE, not just near the 101 curated hospitals.
  */
 
+export interface OSMHospital extends HospitalLike {
+  id: string;
+  name: string;
+  phone: string | null;
+  specialties: string[];
+  availability: 'Unknown';
+  source: 'osm';
+}
+
+interface OverpassTags {
+  name?: string;
+  phone?: string;
+  'contact:phone'?: string;
+  [key: string]: string | undefined;
+}
+
+interface OverpassElement {
+  type: 'node' | 'way';
+  id: number;
+  lat?: number;
+  lon?: number;
+  center?: { lat: number; lon: number };
+  tags?: OverpassTags;
+}
+
+interface OverpassResponse {
+  elements: OverpassElement[];
+}
+
+interface CacheEntry {
+  timestamp: number;
+  data: OSMHospital[];
+}
+
 // In-memory cache for OSM results (key: `lat,lng,radius`, TTL: 5 minutes)
-const osmCache = new Map();
+const osmCache = new Map<string, CacheEntry>();
 const CACHE_TTL = 5 * 60 * 1000;
 
 const ENDPOINTS = [
@@ -15,15 +51,14 @@ const ENDPOINTS = [
 
 /**
  * Fetch hospitals from the Overpass API within a given radius using POST.
- * Tries the primary endpoint (https://overpass-api.de/api/interpreter) with an 8-second
- * AbortController timeout, and gracefully falls back to a public mirror if unreachable.
- *
- * @param {number} lat — center latitude
- * @param {number} lng — center longitude
- * @param {number} radiusMeters — search radius in meters
- * @returns {Promise<Array>} array of hospital objects in app-compatible shape, or [] on failure
+ * Tries the primary endpoint with an 8-second AbortController timeout, and
+ * gracefully falls back to a public mirror if unreachable.
  */
-export async function fetchOSMHospitals(lat, lng, radiusMeters) {
+export async function fetchOSMHospitals(
+  lat: number,
+  lng: number,
+  radiusMeters: number
+): Promise<OSMHospital[]> {
   // Check in-memory cache first
   const cacheKey = `${lat.toFixed(3)},${lng.toFixed(3)},${radiusMeters}`;
   const cached = osmCache.get(cacheKey);
@@ -60,14 +95,14 @@ out center tags;`;
         continue; // try next endpoint
       }
 
-      const json = await res.json();
+      const json = (await res.json()) as OverpassResponse;
 
       if (!json || !Array.isArray(json.elements)) {
         continue;
       }
 
-      const hospitals = json.elements
-        .map((element) => {
+      const hospitals: OSMHospital[] = json.elements
+        .map((element): OSMHospital | null => {
           const tags = element.tags || {};
           if (!tags.name) return null; // Skip elements with no name tag
 
@@ -88,14 +123,15 @@ out center tags;`;
             source: 'osm',
           };
         })
-        .filter(Boolean);
+        .filter((h): h is OSMHospital => h !== null);
 
       // Cache successful response
       osmCache.set(cacheKey, { timestamp: Date.now(), data: hospitals });
       return hospitals;
     } catch (err) {
       clearTimeout(timeoutId);
-      console.warn(`Overpass fetch from ${endpoint} failed:`, err.message || err);
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn(`Overpass fetch from ${endpoint} failed:`, message);
       // continue to next endpoint if primary failed
     }
   }
@@ -105,12 +141,11 @@ out center tags;`;
 
 /**
  * Tries radii [10000, 30000, 100000] in order, returning as soon as it gets 3+ results.
- *
- * @param {number} lat — center latitude
- * @param {number} lng — center longitude
- * @returns {Promise<Array>} best OSM results found
  */
-export async function fetchOSMHospitalsExpanding(lat, lng) {
+export async function fetchOSMHospitalsExpanding(
+  lat: number,
+  lng: number
+): Promise<OSMHospital[]> {
   const radii = [10000, 30000, 100000];
 
   for (const radius of radii) {

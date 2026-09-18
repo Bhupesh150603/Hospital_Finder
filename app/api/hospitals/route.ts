@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { haversine, rankHospitals } from '@/lib/haversine';
+import { NextRequest, NextResponse } from 'next/server';
+import { haversine, rankHospitals, type HospitalLike, type AvailabilityStatus } from '@/lib/haversine';
 import { fetchOSMHospitalsExpanding } from '@/lib/overpass';
 import { prisma } from '@/lib/prisma';
 
@@ -15,26 +15,52 @@ const CANONICAL_SPECIALTIES = [
   'Maternity',
 ];
 
-const STATUS_PRIORITY = { Available: 0, Limited: 1, Full: 2, Unknown: 3 };
+const STATUS_PRIORITY: Record<AvailabilityStatus, number> = {
+  Available: 0,
+  Limited: 1,
+  Full: 2,
+  Unknown: 3,
+};
 
-function pickRepresentative(hospitalSpecialties) {
+interface SpecialtyRow {
+  specialty: { name: string };
+  availabilityStatus: string;
+  lastUpdated: Date;
+}
+
+function pickRepresentative(hospitalSpecialties: SpecialtyRow[] | undefined) {
   if (!hospitalSpecialties || hospitalSpecialties.length === 0) {
-    return { availability: 'Unknown', lastUpdated: null };
+    return { availability: 'Unknown' as AvailabilityStatus, lastUpdated: null as Date | null };
   }
   const best = [...hospitalSpecialties].sort(
-    (a, b) => (STATUS_PRIORITY[a.availabilityStatus] ?? 3) - (STATUS_PRIORITY[b.availabilityStatus] ?? 3)
+    (a, b) =>
+      (STATUS_PRIORITY[a.availabilityStatus as AvailabilityStatus] ?? 3) -
+      (STATUS_PRIORITY[b.availabilityStatus as AvailabilityStatus] ?? 3)
   )[0];
-  return { availability: best.availabilityStatus, lastUpdated: best.lastUpdated };
+  return {
+    availability: best.availabilityStatus as AvailabilityStatus,
+    lastUpdated: best.lastUpdated as Date | null,
+  };
+}
+
+interface TaggedHospital extends HospitalLike {
+  id: string;
+  name: string;
+  phone: string | null;
+  specialties: string[];
+  availability: AvailabilityStatus;
+  lastUpdated: Date | null;
+  source: 'curated' | 'osm';
 }
 
 /**
  * GET /api/hospitals?lat=28.61&lng=77.20&specialty=Cardiac&prioritizeAvailability=true
  */
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const lat = parseFloat(searchParams.get('lat'));
-    const lng = parseFloat(searchParams.get('lng'));
+    const lat = parseFloat(searchParams.get('lat') ?? '');
+    const lng = parseFloat(searchParams.get('lng') ?? '');
     const rawSpecialty = searchParams.get('specialty');
     const prioritizeAvailability = searchParams.get('prioritizeAvailability') !== 'false';
 
@@ -45,10 +71,11 @@ export async function GET(request) {
       );
     }
 
-    const isAnyOrEmpty = !rawSpecialty || rawSpecialty.trim().toLowerCase() === 'any' || rawSpecialty.trim() === '';
-    const targetSpecialty = isAnyOrEmpty
-      ? null
-      : (CANONICAL_SPECIALTIES.find((s) => s.toLowerCase() === rawSpecialty.trim().toLowerCase()) || rawSpecialty.trim());
+    const targetSpecialty: string | null =
+      !rawSpecialty || rawSpecialty.trim() === '' || rawSpecialty.trim().toLowerCase() === 'any'
+        ? null
+        : CANONICAL_SPECIALTIES.find((s) => s.toLowerCase() === rawSpecialty.trim().toLowerCase()) ||
+          rawSpecialty.trim();
 
     // 1. Load curated hospitals from Postgres, with their per-specialty availability
     const dbHospitals = await prisma.hospital.findMany({
@@ -63,13 +90,14 @@ export async function GET(request) {
     );
 
     // 2. Flatten into the same shape the ranking logic has always expected
-    const taggedCurated = dbHospitals.map((h) => {
+    const taggedCurated: TaggedHospital[] = dbHospitals.map((h) => {
       const specialtyNames = h.specialties.map((hs) => hs.specialty.name);
 
-      let availability, lastUpdated;
+      let availability: AvailabilityStatus;
+      let lastUpdated: Date | null;
       if (targetSpecialty) {
         const match = h.specialties.find((hs) => hs.specialty.name === targetSpecialty);
-        availability = match ? match.availabilityStatus : 'Unknown';
+        availability = (match ? match.availabilityStatus : 'Unknown') as AvailabilityStatus;
         lastUpdated = match ? match.lastUpdated : null;
       } else {
         const rep = pickRepresentative(h.specialties);
@@ -86,7 +114,7 @@ export async function GET(request) {
         specialties: specialtyNames,
         availability,
         lastUpdated,
-        source: 'curated',
+        source: 'curated' as const,
       };
     });
 
@@ -104,9 +132,9 @@ export async function GET(request) {
       prioritizeAvailability
     );
 
-    let results = [];
-    let fallbackResults = [];
-    let fallbackLabel = null;
+    let results: typeof curatedRanked = [];
+    let fallbackResults: typeof curatedRanked = [];
+    let fallbackLabel: string | null = null;
 
     if (!targetSpecialty) {
       const osmHospitals = await fetchOSMHospitalsExpanding(lat, lng);
