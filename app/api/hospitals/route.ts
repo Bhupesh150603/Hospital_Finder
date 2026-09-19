@@ -43,11 +43,17 @@ function pickRepresentative(hospitalSpecialties: SpecialtyRow[] | undefined) {
   };
 }
 
+interface SpecialtyDetail {
+  name: string;
+  availability: string;
+}
+
 interface TaggedHospital extends HospitalLike {
   id: string;
   name: string;
   phone: string | null;
   specialties: string[];
+  specialtyDetails?: SpecialtyDetail[];
   availability: AvailabilityStatus;
   lastUpdated: Date | null;
   source: 'curated' | 'osm';
@@ -85,13 +91,17 @@ export async function GET(request: NextRequest) {
     });
 
     console.log(
-      `[GET /api/hospitals] query specialty: "${rawSpecialty}", resolved: "${targetSpecialty}", sample specialties:`,
+      `[GET /api/hospitals] query specialty: "${rawSpecialty}", resolved: "${targetSpecialty}", loaded specialties:`,
       dbHospitals[0]?.specialties.map((hs) => hs.specialty.name)
     );
 
     // 2. Flatten into the same shape the ranking logic has always expected
     const taggedCurated: TaggedHospital[] = dbHospitals.map((h) => {
       const specialtyNames = h.specialties.map((hs) => hs.specialty.name);
+      const specialtyDetails: SpecialtyDetail[] = h.specialties.map((hs) => ({
+        name: hs.specialty.name,
+        availability: hs.availabilityStatus,
+      }));
 
       let availability: AvailabilityStatus;
       let lastUpdated: Date | null;
@@ -112,6 +122,7 @@ export async function GET(request: NextRequest) {
         lng: h.lng,
         phone: h.phone,
         specialties: specialtyNames,
+        specialtyDetails,
         availability,
         lastUpdated,
         source: 'curated' as const,

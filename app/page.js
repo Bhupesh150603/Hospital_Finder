@@ -15,7 +15,7 @@ const SPECIALTIES = [
   { key: 'Dialysis', label: 'Dialysis', icon: Droplet },
 ];
 
-const DEMO_CITIES = {
+const POPULAR_CITIES = {
   Delhi:     { lat: '28.6139', lng: '77.2090' },
   Mumbai:    { lat: '19.0760', lng: '72.8777' },
   Bangalore: { lat: '12.9716', lng: '77.5946' },
@@ -64,8 +64,8 @@ export default function Home() {
     router.push(`/results?lat=${userLat}&lng=${userLng}&specialty=${specialty}`);
   }
 
-  function useDemoLocation(city) {
-    const coords = DEMO_CITIES[city];
+  function useQuickCity(city) {
+    const coords = POPULAR_CITIES[city];
     setLat(coords.lat);
     setLng(coords.lng);
     setGeoError('');
@@ -77,7 +77,7 @@ export default function Home() {
         <div className="split-layout fade-in">
           {/* LEFT — Search Form */}
           <section className="search-side">
-            <span className="eyebrow-badge">CRITICAL CARE NETWORK</span>
+            <span className="eyebrow-badge">Critical care network</span>
             <h1 className="search-title">
               Find emergency care nearby
             </h1>
@@ -107,16 +107,16 @@ export default function Home() {
                   {detecting ? 'Detecting…' : 'Detect my location'}
                 </button>
 
-                <div className="demo-cities">
-                  <span className="demo-label">OR PICK A DEMO CITY</span>
-                  <div className="demo-city-chips">
-                    {Object.keys(DEMO_CITIES).map((city) => (
+                <div className="quick-cities">
+                  <span className="quick-cities-label">Popular cities</span>
+                  <div className="quick-cities-chips">
+                    {Object.keys(POPULAR_CITIES).map((city) => (
                       <button
                         key={city}
                         type="button"
-                        className="demo-chip"
-                        onClick={() => useDemoLocation(city)}
-                        id={`demo-${city.toLowerCase()}`}
+                        className="city-chip"
+                        onClick={() => useQuickCity(city)}
+                        id={`city-${city.toLowerCase()}`}
                       >
                         {city}
                       </button>
@@ -126,7 +126,7 @@ export default function Home() {
 
                 <div className="coord-row">
                   <div className="input-group">
-                    <label htmlFor="lat-input">LATITUDE</label>
+                    <label htmlFor="lat-input">Latitude</label>
                     <input
                       id="lat-input"
                       type="text"
@@ -137,7 +137,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="input-group">
-                    <label htmlFor="lng-input">LONGITUDE</label>
+                    <label htmlFor="lng-input">Longitude</label>
                     <input
                       id="lng-input"
                       type="text"
@@ -213,7 +213,7 @@ export default function Home() {
             <div className="info-card">
               <div className="legend-header">
                 <h3 className="info-card-title">Status legend</h3>
-                <span className="legend-accent">LIVE BED STATUS</span>
+                <span className="legend-accent">Live bed status</span>
               </div>
               <div className="legend-stack">
                 <div className="legend-row">
@@ -241,7 +241,7 @@ export default function Home() {
       <style jsx>{`
         .search-page {
           padding-top: var(--space-xl);
-          padding-bottom: var(--space-3xl);
+          padding-bottom: 4rem;
           min-height: calc(100vh - var(--header-height));
         }
 
@@ -249,7 +249,7 @@ export default function Home() {
         .split-layout {
           display: grid;
           grid-template-columns: 1fr 380px;
-          gap: var(--space-2xl);
+          gap: 3rem;
           align-items: start;
         }
 
@@ -260,29 +260,28 @@ export default function Home() {
 
         .eyebrow-badge {
           display: inline-block;
-          padding: 4px 12px;
+          padding: var(--space-xs) var(--space-md);
           background: rgba(29, 78, 137, 0.08);
-          color: var(--action-primary);
+          color: var(--primary);
           font-size: 0.6875rem;
-          font-weight: 700;
-          letter-spacing: 0.04em;
-          border-radius: var(--radius-sm);
+          font-weight: 600;
+          border-radius: var(--radius-default);
           border: 1px solid rgba(29, 78, 137, 0.2);
-          margin-bottom: var(--space-md);
+          margin-bottom: var(--space-lg);
         }
 
         .search-title {
-          font-size: 2rem;
+          font-size: 2.25rem;
           font-weight: 700;
-          line-height: 1.15;
+          line-height: 2.75rem;
           margin-bottom: var(--space-sm);
-          color: var(--text-ink);
+          color: var(--ink-primary);
         }
 
         .search-subtitle {
-          color: var(--text-secondary);
-          font-size: 0.875rem;
-          line-height: 1.6;
+          color: var(--ink-muted);
+          font-size: 0.9375rem;
+          line-height: 1.375rem;
           margin-bottom: var(--space-xl);
           max-width: 520px;
         }
@@ -290,7 +289,7 @@ export default function Home() {
         .search-form {
           display: flex;
           flex-direction: column;
-          gap: var(--space-lg);
+          gap: var(--space-xl);
         }
 
         .form-section {
@@ -311,12 +310,12 @@ export default function Home() {
           gap: 6px;
           font-size: 0.8125rem;
           font-weight: 600;
-          color: var(--text-ink);
+          color: var(--ink-primary);
         }
 
         .form-hint {
           font-size: 0.6875rem;
-          color: var(--text-muted);
+          color: var(--ink-muted);
         }
 
         .detect-btn {
@@ -326,46 +325,46 @@ export default function Home() {
         .coord-row {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: var(--space-md);
+          gap: var(--space-lg);
         }
 
         .geo-error {
           color: var(--status-full);
-          font-size: 0.75rem;
+          font-size: 0.8125rem;
+          font-weight: 400;
         }
 
-        /* Demo cities */
-        .demo-cities {
+        /* Popular cities quick-select */
+        .quick-cities {
           margin-top: var(--space-xs);
         }
-        .demo-label {
-          font-size: 0.625rem;
+        .quick-cities-label {
+          font-size: 0.6875rem;
           font-weight: 600;
-          color: var(--text-muted);
-          letter-spacing: 0.05em;
+          color: var(--ink-muted);
           display: block;
           margin-bottom: 6px;
         }
-        .demo-city-chips {
+        .quick-cities-chips {
           display: flex;
           flex-wrap: wrap;
           gap: 6px;
         }
-        .demo-chip {
+        .city-chip {
           padding: 5px 14px;
-          border-radius: var(--radius-full);
-          font-size: 0.75rem;
+          border-radius: var(--radius-default);
+          font-size: 0.8125rem;
           font-weight: 500;
-          background: var(--surface-card);
-          color: var(--text-ink);
-          border: 1px solid var(--border-subtle);
+          background: var(--surface-plain);
+          color: var(--ink-primary);
+          border: 1px solid var(--border-structural);
           cursor: pointer;
           transition: all var(--transition-fast);
           font-family: inherit;
         }
-        .demo-chip:hover {
-          background: #F0F1F3;
-          border-color: #CBD0D8;
+        .city-chip:hover {
+          background: var(--canvas-base);
+          border-color: #B5B5AD;
         }
 
         /* Specialty chips */
@@ -379,26 +378,26 @@ export default function Home() {
           align-items: center;
           gap: 5px;
           padding: 7px 16px;
-          border-radius: var(--radius-full);
-          font-size: 0.75rem;
+          border-radius: var(--radius-default);
+          font-size: 0.8125rem;
           font-weight: 500;
-          background: var(--surface-card);
-          color: var(--text-secondary);
-          border: 1px solid var(--border-subtle);
+          background: var(--surface-plain);
+          color: var(--ink-muted);
+          border: 1px solid var(--border-structural);
           cursor: pointer;
           transition: all var(--transition-fast);
         }
         .specialty-chip:hover {
-          background: #F0F1F3;
-          color: var(--text-ink);
+          background: var(--canvas-base);
+          color: var(--ink-primary);
         }
         .specialty-chip-active {
-          background: var(--action-primary);
+          background: var(--primary);
           color: white;
-          border-color: var(--action-primary);
+          border-color: var(--primary);
         }
         .specialty-chip-active:hover {
-          background: var(--action-primary-hover);
+          background: var(--primary-hover);
           color: white;
         }
 
@@ -406,32 +405,35 @@ export default function Home() {
         .search-submit {
           width: 100%;
           padding: 14px;
-          font-size: 0.875rem;
-          border-radius: var(--radius-lg);
+          font-size: 0.9375rem;
+          font-weight: 600;
+          border-radius: var(--radius-default);
           margin-top: var(--space-sm);
+          min-height: 48px;
         }
 
         /* Right — info side */
         .info-side {
           display: flex;
           flex-direction: column;
-          gap: var(--space-md);
+          gap: var(--space-lg);
           position: sticky;
           top: calc(var(--header-height) + var(--space-xl));
         }
 
         .info-card {
-          background: var(--surface-card);
-          border: 1px solid var(--border-subtle);
-          border-radius: var(--radius-xl);
-          padding: var(--space-lg);
+          background: var(--surface-plain);
+          border: 1px solid var(--border-structural);
+          border-radius: var(--radius-lg);
+          padding: var(--space-xl);
+          box-shadow: var(--shadow-tier1);
         }
 
         .info-stat-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: var(--space-lg);
-          margin-bottom: var(--space-lg);
+          gap: var(--space-xl);
+          margin-bottom: var(--space-xl);
         }
         .info-stat {
           display: flex;
@@ -441,8 +443,8 @@ export default function Home() {
         .info-stat-value {
           font-size: 1.5rem;
           font-weight: 700;
-          color: var(--text-ink);
-          line-height: 1.2;
+          color: var(--ink-primary);
+          line-height: 2rem;
         }
         .info-stat-live {
           display: inline-flex;
@@ -452,35 +454,36 @@ export default function Home() {
         }
         .info-stat-label {
           font-size: 0.6875rem;
-          color: var(--text-muted);
+          color: var(--ink-muted);
+          font-weight: 600;
         }
 
         .info-note {
-          padding-top: var(--space-md);
+          padding-top: var(--space-lg);
           border-top: 1px solid var(--border-subtle);
         }
         .info-note p {
-          font-size: 0.75rem;
-          color: var(--text-muted);
-          line-height: 1.55;
+          font-size: 0.8125rem;
+          color: var(--ink-muted);
+          line-height: 1.125rem;
+          font-weight: 400;
         }
 
         .legend-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: var(--space-md);
+          margin-bottom: var(--space-lg);
         }
         .info-card-title {
-          font-size: 0.9375rem;
-          font-weight: 700;
-          color: var(--text-ink);
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--ink-primary);
         }
         .legend-accent {
-          font-size: 0.5625rem;
-          font-weight: 700;
+          font-size: 0.6875rem;
+          font-weight: 600;
           color: var(--status-full);
-          letter-spacing: 0.06em;
         }
 
         .legend-stack {
@@ -499,9 +502,10 @@ export default function Home() {
           justify-content: center;
         }
         .legend-desc {
-          font-size: 0.6875rem;
-          color: var(--text-secondary);
-          line-height: 1.4;
+          font-size: 0.8125rem;
+          color: var(--ink-muted);
+          line-height: 1.125rem;
+          font-weight: 400;
         }
 
         @media (max-width: 900px) {
@@ -512,7 +516,8 @@ export default function Home() {
             position: static;
           }
           .search-title {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
+            line-height: 2.25rem;
           }
           .coord-row {
             grid-template-columns: 1fr;

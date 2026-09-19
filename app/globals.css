@@ -1,71 +1,78 @@
-/* ===== Clinical Design System — Emergency Hospital Finder ===== */
+/* ===== Emergency Care Wayfinding Design System ===== */
+/* Source: DESIGN.md — Stitch Emergency Hospital Finder */
 
-/* --- IBM Plex Sans — single family, hierarchy via weight/scale --- */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+/* --- Public Sans — single family, hierarchy via weight/scale --- */
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap');
 
-/* --- CSS Custom Properties (Clinical Tokens) --- */
+/* --- CSS Custom Properties (Clinical Tokens — DESIGN.md §2) --- */
 :root {
-  /* Background & Surface */
-  --bg-clinical: #FAFAF8;
-  --surface-card: #FFFFFF;
-  --border-subtle: #E2E4E9;
+  /* Canvas & Surface — Tier 0 / Tier 1 */
+  --canvas-base: #FAFAF8;
+  --surface-plain: #FFFFFF;
 
   /* Ink */
-  --text-ink: #1C1F26;
-  --text-secondary: #5A5F6B;
-  --text-muted: #8C919D;
+  --ink-primary: #1C1F26;
+  --ink-muted: #585E6C;
 
-  /* Primary Action — municipal deep blue */
-  --action-primary: #1D4E89;
-  --action-primary-hover: #164070;
+  /* Borders */
+  --border-structural: #D5D5CD;
+  --border-subtle: #EAEAE4;
 
-  /* Status */
+  /* Primary Action — institutional deep blue */
+  --primary: #1D4E89;
+  --primary-dark: #00376C;
+  --primary-hover: #164070;
+
+  /* Emergency Accent — strictly SOS / 108 dispatch */
+  --emergency-accent: #E8553A;
+
+  /* Triage: Available */
   --status-available: #2F855A;
-  --status-available-bg: #F0FFF4;
-  --status-available-border: #C6F6D5;
+  --status-available-bg: #EBF7EE;
+  --status-available-border: #2F855A;
+
+  /* Triage: Limited */
   --status-limited: #B7791F;
-  --status-limited-bg: #FFFFF0;
-  --status-limited-border: #FEFCBF;
+  --status-limited-bg: #FEF6E7;
+  --status-limited-border: #B7791F;
+
+  /* Triage: Full / Divert */
   --status-full: #C53030;
-  --status-full-bg: #FFF5F5;
-  --status-full-border: #FED7D7;
+  --status-full-bg: #FDF0F0;
+  --status-full-border: #C53030;
 
-  /* Emergency SOS — strictly isolated */
-  --emergency-sos: #E8553A;
+  /* Community / Unknown */
+  --status-community: #585E6C;
+  --status-community-bg: #F2F3FD;
+  --status-community-border: #D5D5CD;
 
-  /* Community/unknown */
-  --status-community: #8C919D;
-  --status-community-bg: #F7F7F8;
-  --status-community-border: #E2E4E9;
+  /* Spacing (DESIGN.md §4) */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 0.75rem;   /* 12px */
+  --space-lg: 1rem;      /* 16px */
+  --space-xl: 1.5rem;    /* 24px */
+  --gutter: 0.75rem;
+  --margin: 1rem;
 
-  /* Spacing */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-2xl: 48px;
-  --space-3xl: 64px;
+  /* Corner Radii (DESIGN.md §4 — shapes are restrained) */
+  --radius-sm: 0.125rem;  /* 2px */
+  --radius-default: 0.25rem; /* 4px — standard inputs, buttons, badges */
+  --radius-md: 0.375rem;  /* 6px */
+  --radius-lg: 0.5rem;    /* 8px — cards, containers */
+  --radius-xl: 0.75rem;   /* 12px — bottom sheets, major dialogs */
+  /* Pill: 9999px — ONLY for circular icon avatars; forbidden on buttons/badges */
 
-  /* Radii — varied by hierarchy */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-full: 9999px;
-
-  /* Shadows — varied by hierarchy, no glows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+  /* Elevation (DESIGN.md §4) */
+  --shadow-tier1: 0 1px 2px rgba(28, 31, 38, 0.05);
+  --shadow-tier3: 0 4px 12px rgba(28, 31, 38, 0.12);
 
   /* Transitions */
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
 
   /* Layout */
-  --max-width: 1200px;
+  --max-width: 1280px;
   --header-height: 56px;
 }
 
@@ -84,10 +91,12 @@ html {
 }
 
 body {
-  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--bg-clinical);
-  color: var(--text-ink);
-  line-height: 1.6;
+  font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--canvas-base);
+  color: var(--ink-primary);
+  line-height: 1.375;
+  font-size: 0.9375rem;
+  font-weight: 400;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -114,7 +123,7 @@ input {
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 var(--space-lg);
+  padding: 0 var(--margin);
   position: relative;
 }
 
@@ -127,9 +136,9 @@ input {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-lg);
-  background: var(--surface-card);
-  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 var(--margin);
+  background: var(--surface-plain);
+  border-bottom: 1px solid var(--border-structural);
 }
 
 .navbar-logo {
@@ -138,14 +147,14 @@ input {
   gap: var(--space-sm);
   font-weight: 700;
   font-size: 1rem;
-  color: var(--text-ink);
+  color: var(--ink-primary);
 }
 
 .navbar-logo .logo-icon {
   width: 28px;
   height: 28px;
-  background: var(--action-primary);
-  border-radius: var(--radius-sm);
+  background: var(--primary);
+  border-radius: var(--radius-default);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,41 +167,43 @@ input {
 }
 
 .navbar-links a {
-  padding: 6px var(--space-md);
-  border-radius: var(--radius-sm);
+  padding: 6px var(--space-lg);
+  border-radius: var(--radius-default);
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--ink-muted);
   transition: all var(--transition-fast);
 }
 
 .navbar-links a:hover,
 .navbar-links a.active {
-  color: var(--text-ink);
-  background: rgba(0, 0, 0, 0.04);
+  color: var(--ink-primary);
+  background: rgba(28, 31, 38, 0.04);
 }
 
-/* --- Cards — varied by hierarchy --- */
+/* --- Cards — Tier 1 elevation --- */
 .card {
-  background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
+  background: var(--surface-plain);
+  border: 1px solid var(--border-structural);
   border-radius: var(--radius-lg);
-  padding: var(--space-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-tier1);
   transition: border-color var(--transition-fast);
 }
 
 .card:hover {
-  border-color: #CBD0D8;
+  border-color: #B5B5AD;
 }
 
-/* --- Availability Badges — solid tint, no pulse, no glow --- */
+/* --- Availability Badges — DESIGN.md §5.2 --- */
+/* Static 600-weight text + 1px borders. No dots, no glow, no pulse. */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
   padding: 3px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 0.75rem;
+  border-radius: var(--radius-default);
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
@@ -228,22 +239,22 @@ input {
   align-items: center;
   gap: 4px;
   padding: 2px 8px;
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-default);
   font-size: 0.6875rem;
   font-weight: 500;
-  background: #F0F3F8;
-  color: var(--action-primary);
-  border: 1px solid #DCE1EA;
+  background: rgba(29, 78, 137, 0.06);
+  color: var(--primary);
+  border: 1px solid rgba(29, 78, 137, 0.15);
 }
 
-/* --- Buttons --- */
+/* --- Buttons — DESIGN.md §5.1 --- */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   padding: 9px 18px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-default);
   font-size: 0.8125rem;
   font-weight: 600;
   transition: all var(--transition-fast);
@@ -251,22 +262,38 @@ input {
   border: none;
 }
 
+/* Primary Operational */
 .btn-primary {
-  background: var(--action-primary);
+  background: var(--primary);
   color: white;
+  border: 1px solid var(--primary);
 }
 .btn-primary:hover {
-  background: var(--action-primary-hover);
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
 }
 
+/* Secondary / Action Outlined */
 .btn-secondary {
-  background: transparent;
-  color: var(--text-ink);
-  border: 1px solid var(--border-subtle);
+  background: var(--surface-plain);
+  color: var(--ink-primary);
+  border: 1px solid var(--border-structural);
 }
 .btn-secondary:hover {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: #CBD0D8;
+  background: var(--canvas-base);
+  border-color: #B5B5AD;
+}
+
+/* Emergency Action — SOS / Call ER */
+.btn-emergency {
+  background: var(--emergency-accent);
+  color: white;
+  font-weight: 700;
+  min-height: 48px;
+  border: none;
+}
+.btn-emergency:hover {
+  background: #D04A32;
 }
 
 .btn-call {
@@ -278,11 +305,12 @@ input {
 }
 
 .btn-directions {
-  background: var(--action-primary);
+  background: var(--primary);
   color: white;
+  border: 1px solid var(--primary);
 }
 .btn-directions:hover {
-  background: var(--action-primary-hover);
+  background: var(--primary-hover);
 }
 
 .btn-sm {
@@ -290,7 +318,7 @@ input {
   font-size: 0.75rem;
 }
 
-/* --- Form Inputs --- */
+/* --- Form Inputs — DESIGN.md §5.4 --- */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -298,34 +326,34 @@ input {
 }
 
 .input-group label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--ink-muted);
 }
 
 .input-field {
   padding: 10px 14px;
-  background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  color: var(--text-ink);
-  font-size: 0.875rem;
+  background: var(--surface-plain);
+  border: 1px solid var(--border-structural);
+  border-radius: var(--radius-default);
+  color: var(--ink-primary);
+  font-size: 0.9375rem;
   transition: border-color var(--transition-fast);
   outline: none;
 }
 
 .input-field:focus {
-  border-color: var(--action-primary);
+  border-color: var(--primary);
   box-shadow: 0 0 0 2px rgba(29, 78, 137, 0.12);
 }
 
 .input-field::placeholder {
-  color: var(--text-muted);
+  color: var(--ink-muted);
 }
 
 select.input-field {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238C919D' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23585E6C' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 36px;
@@ -336,8 +364,8 @@ select.input-field {
 .spinner {
   width: 32px;
   height: 32px;
-  border: 2.5px solid var(--border-subtle);
-  border-top-color: var(--action-primary);
+  border: 2.5px solid var(--border-structural);
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -351,41 +379,41 @@ select.input-field {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-md);
-  padding: var(--space-3xl) 0;
-  color: var(--text-secondary);
-  font-size: 0.875rem;
+  gap: var(--space-lg);
+  padding: 4rem 0;
+  color: var(--ink-muted);
+  font-size: 0.9375rem;
 }
 
 /* --- Empty State --- */
 .empty-state {
   text-align: center;
-  padding: var(--space-3xl) var(--space-lg);
-  color: var(--text-secondary);
+  padding: 4rem var(--space-xl);
+  color: var(--ink-muted);
 }
 
 .empty-state .empty-icon {
   font-size: 2rem;
-  margin-bottom: var(--space-md);
-  color: var(--text-muted);
+  margin-bottom: var(--space-lg);
+  color: var(--ink-muted);
 }
 
 /* --- Status Toggle Buttons (Admin) --- */
 .toggle-group {
   display: flex;
   gap: 2px;
-  background: #F0F1F3;
+  background: #EAEAE4;
   padding: 3px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-default);
+  border: 1px solid var(--border-structural);
 }
 
 .toggle-btn {
   padding: 5px 12px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-default);
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--ink-muted);
   transition: all var(--transition-fast);
   cursor: pointer;
   border: none;
@@ -393,7 +421,7 @@ select.input-field {
 }
 
 .toggle-btn:hover {
-  color: var(--text-ink);
+  color: var(--ink-primary);
 }
 
 .toggle-btn.active-available {
@@ -417,11 +445,17 @@ select.input-field {
 /* --- Responsive --- */
 @media (max-width: 768px) {
   .container {
-    padding: 0 var(--space-md);
+    padding: 0 var(--space-lg);
   }
 
   .navbar {
-    padding: 0 var(--space-md);
+    padding: 0 var(--space-lg);
+  }
+}
+
+@media (min-width: 1025px) {
+  .container {
+    padding: 0 2rem;
   }
 }
 
@@ -441,16 +475,16 @@ select.input-field {
 
 /* --- Admin row flash on status update --- */
 @keyframes rowFlash {
-  0% { background: var(--surface-card); }
-  30% { background: #EBF4FF; }
-  100% { background: var(--surface-card); }
+  0% { background: var(--surface-plain); }
+  30% { background: rgba(29, 78, 137, 0.06); }
+  100% { background: var(--surface-plain); }
 }
 
 .admin-row-flash {
   animation: rowFlash 0.6s ease;
 }
 
-/* --- Floating Emergency Call Button — SOS accent only --- */
+/* --- Floating Emergency Call Button — DESIGN.md §5.1 Emergency Action --- */
 .emergency-fab {
   position: fixed;
   bottom: 24px;
@@ -458,21 +492,23 @@ select.input-field {
   z-index: 1000;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-md);
   padding: 10px 20px 10px 14px;
-  background: #DC2626;
+  background: var(--emergency-accent);
   color: white;
-  font-family: 'IBM Plex Sans', sans-serif;
-  border-radius: var(--radius-full);
+  font-family: 'Public Sans', sans-serif;
+  border-radius: var(--radius-default);
   text-decoration: none;
-  box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.4), 0 8px 10px -6px rgba(220, 38, 38, 0.2);
-  transition: transform var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+  font-weight: 700;
+  min-height: 48px;
+  border: 1px solid var(--ink-primary);
+  box-shadow: var(--shadow-tier3);
+  transition: transform var(--transition-fast), background var(--transition-fast);
 }
 
 .emergency-fab:hover {
-  background: #B91C1C;
+  background: #D04A32;
   transform: translateY(-2px);
-  box-shadow: 0 14px 28px -5px rgba(220, 38, 38, 0.5);
 }
 
 .fab-icon-bubble {
@@ -499,9 +535,8 @@ select.input-field {
 }
 
 .fab-sub {
-  font-size: 0.5625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
   color: rgba(255, 255, 255, 0.85);
   margin-top: 2px;
 }
@@ -521,6 +556,6 @@ select.input-field {
     font-size: 0.75rem;
   }
   .fab-sub {
-    font-size: 0.5rem;
+    font-size: 0.6875rem;
   }
 }

@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
 
         {children}
 
-        {/* Floating Emergency Hotline Button matching Stitch mockup */}
+        {/* Floating Emergency Hotline Button */}
         <a
           href="tel:108"
           className="emergency-fab"

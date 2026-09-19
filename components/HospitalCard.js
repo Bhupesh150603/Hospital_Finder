@@ -1,4 +1,4 @@
-import { MapPin, Phone, Navigation, Search, Users } from 'lucide-react';
+import { MapPin, Phone, Navigation, Search } from 'lucide-react';
 
 /**
  * Compute a human-readable relative time string from an ISO timestamp.
@@ -16,11 +16,35 @@ function timeAgo(isoString) {
 }
 
 /**
+ * Map specialty availability status to DESIGN.md triage tokens.
+ */
+function triageClass(availability) {
+  switch (availability) {
+    case 'Available': return 'triage-available';
+    case 'Limited': return 'triage-limited';
+    case 'Full': return 'triage-full';
+    default: return 'triage-unknown';
+  }
+}
+
+function triageLabel(availability) {
+  switch (availability) {
+    case 'Available': return 'Open';
+    case 'Limited': return 'Limited';
+    case 'Full': return 'Full';
+    default: return 'N/A';
+  }
+}
+
+/**
  * HospitalCard — renders a single hospital result card.
- * Matches the Stitch "Hospital Results & Map - Modern View" mockup.
+ * Implements DESIGN.md §5.3 Facility Card Structure:
+ *   1. Header Zone — facility name, distance/ETA
+ *   2. Triage Metric Row — per-specialty availability boxes
+ *   3. Direct Action Footer — split Directions + Call/Search buttons
  */
 export default function HospitalCard({ hospital }) {
-  const { name, distance, etaMinutes, specialties, availability, phone, lat, lng, lastUpdated, source } = hospital;
+  const { name, distance, etaMinutes, specialties, specialtyDetails, availability, phone, lat, lng, lastUpdated, source } = hospital;
 
   const isOSM = source === 'osm';
   const isFull = availability === 'Full';
@@ -30,74 +54,59 @@ export default function HospitalCard({ hospital }) {
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
   const searchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
 
-  // Estimated beds for curated status display
-  const bedCount = isAvailable ? '8 Beds' : isLimited ? '2 Beds' : null;
-
   return (
     <div className="hospital-card card">
-      {/* Header row */}
+      {/* ── Zone 1: Header ── */}
       <div className="hc-header">
-        <h3 className="hc-name">{name}</h3>
+        <div className="hc-header-left">
+          <h3 className="hc-name">{name}</h3>
+          <span className="hc-distance">
+            <MapPin size={12} />
+            {distance} km &bull; ~{etaMinutes} min away
+          </span>
+        </div>
 
-        {/* Status Badge */}
+        {/* Overall Status Badge — DESIGN.md §5.2 */}
         {isOSM ? (
-          <span className="badge-osm">
-            <Users size={11} />
-            Community-sourced
-          </span>
-        ) : isFull ? (
-          <span className="badge-status badge-full">
-            <span className="badge-dot dot-full"></span>
-            At Capacity
-          </span>
-        ) : isLimited ? (
-          <span className="badge-status badge-limited">
-            <span className="badge-dot dot-limited"></span>
-            Limited &bull; {bedCount}
-          </span>
+          <span className="badge badge-community">Community</span>
         ) : (
-          <span className="badge-status badge-available">
-            <span className="badge-dot dot-available"></span>
-            Available &bull; {bedCount}
+          <span className={`badge ${isFull ? 'badge-full' : isLimited ? 'badge-limited' : 'badge-available'}`}>
+            {isFull ? 'At capacity' : isLimited ? 'Limited' : 'Available'}
           </span>
         )}
       </div>
 
-      {/* Distance row */}
-      <div className="hc-meta">
-        <span className="hc-distance">
-          <MapPin size={12} className="meta-pin-icon" />
-          {distance} km &bull; ~{etaMinutes} min away
-        </span>
-      </div>
+      {/* ── Zone 2: Triage Metric Row — per-specialty availability ── */}
+      {!isOSM && specialtyDetails && specialtyDetails.length > 0 && (
+        <>
+          <div className="hc-divider" />
+          <div className="hc-triage-row">
+            {specialtyDetails.map((spec) => (
+              <div key={spec.name} className={`triage-box ${triageClass(spec.availability)}`}>
+                <span className="triage-label">{spec.name}</span>
+                <span className="triage-value">{triageLabel(spec.availability)}</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
-      {/* Specialty tags */}
-      <div className="hc-tags">
-        {specialties &&
-          specialties.map((s) => {
-            const isEmergencyHighlight = s.toLowerCase().includes('trauma') || s.toLowerCase().includes('icu');
-            return (
-              <span key={s} className={`spec-tag ${isEmergencyHighlight ? 'spec-tag-highlight' : ''}`}>
-                {s}
-              </span>
-            );
-          })}
-        {/* 24x7 ER tag for major emergency facilities */}
-        {!isOSM && <span className="spec-tag spec-tag-er">24&times;7 ER</span>}
-      </div>
+      {/* OSM fallback — no per-specialty data */}
+      {isOSM && specialties && specialties.length > 0 && (
+        <>
+          <div className="hc-divider" />
+          <div className="hc-spec-tags">
+            {specialties.map((s) => (
+              <span key={s} className="tag">{s}</span>
+            ))}
+          </div>
+        </>
+      )}
 
-      {/* Callout box matching Stitch mockup */}
-      <div
-        className={`hc-callout ${
-          isOSM
-            ? 'callout-community'
-            : isFull
-            ? 'callout-danger'
-            : isLimited
-            ? 'callout-warning'
-            : 'callout-available'
-        }`}
-      >
+      {/* Contextual callout */}
+      <div className={`hc-callout ${
+        isOSM ? 'callout-community' : isFull ? 'callout-danger' : isLimited ? 'callout-warning' : 'callout-available'
+      }`}>
         {isOSM && (
           <p className="callout-text">
             Capacity not reported &mdash; call ahead to confirm.
@@ -120,12 +129,13 @@ export default function HospitalCard({ hospital }) {
         )}
       </div>
 
-      {/* Action buttons */}
+      {/* ── Zone 3: Direct Action Footer ── */}
+      <div className="hc-divider" />
       <div className="hc-actions">
         {phone ? (
           <a href={`tel:${phone}`} className="hc-btn hc-btn-outline" id={`call-${hospital.id}`}>
             <Phone size={12} />
-            Call
+            Call ER
           </a>
         ) : (
           <a
@@ -152,182 +162,160 @@ export default function HospitalCard({ hospital }) {
       </div>
 
       <style jsx>{`
+        /* ── Facility Card — DESIGN.md §5.3 ── */
         .hospital-card {
           display: flex;
           flex-direction: column;
-          gap: 10px;
-          padding: 16px 18px;
-          border-radius: var(--radius-xl);
-          background: var(--surface-card);
-          border: 1px solid var(--border-subtle);
-          box-shadow: var(--shadow-sm);
-          transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+          gap: 0;
+          padding: var(--space-lg);
+          border-radius: var(--radius-lg);
+          background: var(--surface-plain);
+          border: 1px solid var(--border-structural);
+          box-shadow: var(--shadow-tier1);
+          transition: border-color var(--transition-fast);
         }
 
         .hospital-card:hover {
-          box-shadow: var(--shadow-md);
-          border-color: #CBD5E1;
+          border-color: #B5B5AD;
         }
 
+        /* ── Header Zone ── */
         .hc-header {
           display: flex;
           justify-content: space-between;
           align-items: flex-start;
-          gap: 12px;
+          gap: var(--space-md);
+        }
+
+        .hc-header-left {
+          flex: 1;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-xs);
         }
 
         .hc-name {
-          font-size: 0.9375rem;
-          font-weight: 700;
-          line-height: 1.35;
-          color: var(--text-ink);
-          flex: 1;
-          min-width: 0;
-        }
-
-        /* Status Badges */
-        .badge-status {
-          display: inline-flex;
-          align-items: center;
-          gap: 5px;
-          padding: 3px 9px;
-          border-radius: var(--radius-full);
-          font-size: 0.6875rem;
-          font-weight: 700;
-          white-space: nowrap;
-          flex-shrink: 0;
-        }
-
-        .badge-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-        }
-
-        .badge-available {
-          background: #ECFDF5;
-          color: #059669;
-          border: 1px solid #A7F3D0;
-        }
-        .dot-available {
-          background: #10B981;
-        }
-
-        .badge-limited {
-          background: #FFFBEB;
-          color: #D97706;
-          border: 1px solid #FDE68A;
-        }
-        .dot-limited {
-          background: #F59E0B;
-        }
-
-        .badge-full {
-          background: #FEF2F2;
-          color: #DC2626;
-          border: 1px solid #FECACA;
-        }
-        .dot-full {
-          background: #EF4444;
-        }
-
-        .badge-osm {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          padding: 3px 9px;
-          background: #F1F5F9;
-          color: #475569;
-          border: 1px solid #CBD5E1;
-          border-radius: var(--radius-full);
-          font-size: 0.6875rem;
+          font-size: 1rem;
           font-weight: 600;
-          white-space: nowrap;
-          flex-shrink: 0;
-        }
-
-        /* Meta row */
-        .hc-meta {
-          display: flex;
-          align-items: center;
-          gap: 12px;
+          line-height: 1.375rem;
+          color: var(--ink-primary);
         }
 
         .hc-distance {
           display: inline-flex;
           align-items: center;
           gap: 4px;
-          font-size: 0.75rem;
-          color: var(--text-muted);
-          font-weight: 500;
+          font-size: 0.8125rem;
+          color: var(--ink-muted);
+          font-weight: 400;
         }
 
-        /* Specialty Tags */
-        .hc-tags {
+        /* ── Dividers — hairline 1px solid EAEAE4 ── */
+        .hc-divider {
+          height: 1px;
+          background: var(--border-subtle);
+          margin: var(--space-md) 0;
+        }
+
+        /* ── Triage Metric Row ── */
+        .hc-triage-row {
           display: flex;
           flex-wrap: wrap;
-          gap: 5px;
+          gap: var(--space-sm);
         }
 
-        .spec-tag {
+        .triage-box {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2px;
+          padding: var(--space-xs) var(--space-sm);
+          border-radius: var(--radius-default);
+          border: 1px solid;
+          min-width: 64px;
+          flex: 1;
+        }
+
+        .triage-label {
           font-size: 0.6875rem;
-          font-weight: 500;
-          color: #475569;
-          background: #F8FAFC;
-          border: 1px solid #E2E8F0;
-          border-radius: var(--radius-sm);
-          padding: 2px 7px;
+          font-weight: 600;
+          line-height: 0.875rem;
         }
 
-        .spec-tag-highlight {
-          color: var(--action-primary);
-          background: #EFF6FF;
-          border-color: #BFDBFE;
+        .triage-value {
+          font-size: 0.6875rem;
+          font-weight: 600;
+          line-height: 0.875rem;
         }
 
-        .spec-tag-er {
-          color: #2563EB;
-          background: #EFF6FF;
-          border: 1px solid #93C5FD;
-          font-weight: 700;
+        .triage-available {
+          background: var(--status-available-bg);
+          border-color: var(--status-available-border);
+          color: var(--status-available);
         }
 
-        /* Callout Box matching Stitch */
+        .triage-limited {
+          background: var(--status-limited-bg);
+          border-color: var(--status-limited-border);
+          color: var(--status-limited);
+        }
+
+        .triage-full {
+          background: var(--status-full-bg);
+          border-color: var(--status-full-border);
+          color: var(--status-full);
+        }
+
+        .triage-unknown {
+          background: var(--status-community-bg);
+          border-color: var(--status-community-border);
+          color: var(--status-community);
+        }
+
+        /* ── Specialty tags (OSM cards only) ── */
+        .hc-spec-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--space-xs);
+        }
+
+        /* ── Callout Box ── */
         .hc-callout {
-          padding: 9px 12px;
-          border-radius: var(--radius-md);
-          margin: 2px 0;
+          padding: var(--space-sm) var(--space-md);
+          border-radius: var(--radius-default);
+          margin-top: var(--space-sm);
         }
 
         .callout-available,
-        .callout-limited,
+        .callout-warning,
         .callout-community {
-          background: #F8FAFC;
-          border: 1px solid #E2E8F0;
+          background: var(--canvas-base);
+          border: 1px solid var(--border-subtle);
         }
 
         .callout-danger {
-          background: #FFF5F5;
-          border: 1px solid #FED7D7;
+          background: var(--status-full-bg);
+          border: 1px solid var(--status-full-border);
         }
 
         .callout-text {
-          font-size: 0.75rem;
-          line-height: 1.45;
-          color: #475569;
+          font-size: 0.8125rem;
+          line-height: 1.125rem;
+          color: var(--ink-muted);
           margin: 0;
+          font-weight: 400;
         }
 
         .text-danger {
-          color: #DC2626;
+          color: var(--status-full);
           font-weight: 500;
         }
 
-        /* Actions */
+        /* ── Action Footer — split buttons ── */
         .hc-actions {
           display: flex;
-          gap: 8px;
-          padding-top: 4px;
+          gap: var(--space-sm);
         }
 
         .hc-btn {
@@ -336,35 +324,36 @@ export default function HospitalCard({ hospital }) {
           align-items: center;
           justify-content: center;
           gap: 6px;
-          padding: 8px 12px;
-          font-size: 0.75rem;
+          padding: var(--space-sm) var(--space-md);
+          font-size: 0.8125rem;
           font-weight: 600;
-          border-radius: var(--radius-md);
+          border-radius: var(--radius-default);
           text-decoration: none;
           transition: all var(--transition-fast);
           cursor: pointer;
           font-family: inherit;
+          min-height: 36px;
         }
 
         .hc-btn-outline {
-          background: var(--surface-card);
-          color: var(--text-ink);
-          border: 1px solid var(--border-subtle);
+          background: var(--surface-plain);
+          color: var(--ink-primary);
+          border: 1px solid var(--border-structural);
         }
 
         .hc-btn-outline:hover {
-          background: #F8FAFC;
-          border-color: #CBD5E1;
+          background: var(--canvas-base);
+          border-color: #B5B5AD;
         }
 
         .hc-btn-filled {
-          background: var(--action-primary);
+          background: var(--primary);
           color: white;
-          border: 1px solid var(--action-primary);
+          border: 1px solid var(--primary);
         }
 
         .hc-btn-filled:hover {
-          background: var(--action-primary-hover);
+          background: var(--primary-hover);
         }
       `}</style>
     </div>

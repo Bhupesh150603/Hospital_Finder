@@ -15,13 +15,13 @@ L.Icon.Default.mergeOptions({
 });
 
 /**
- * Status colors matching DESIGN.md and Stitch mockup
+ * Status colors matching DESIGN.md triage spectrum
  */
 const STATUS_COLORS = {
-  Available: '#10B981', // emerald green
-  Limited: '#F59E0B',   // amber
-  Full: '#EF4444',      // red/coral
-  Community: '#4B5563', // slate grey
+  Available: '#2F855A',
+  Limited: '#B7791F',
+  Full: '#C53030',
+  Community: '#585E6C',
 };
 
 /**
@@ -75,22 +75,21 @@ function createUserIcon() {
           width: 20px;
           height: 20px;
           border-radius: 50%;
-          background: #2563EB;
+          background: #1D4E89;
           border: 3px solid white;
-          box-shadow: 0 0 0 3px rgba(37,99,235,0.35), 0 2px 6px rgba(0,0,0,0.3);
+          box-shadow: 0 0 0 3px rgba(29,78,137,0.35), 0 2px 6px rgba(0,0,0,0.3);
         "></div>
         <div style="
           margin-top: 4px;
-          background: #0F172A;
+          background: #1C1F26;
           color: white;
           font-size: 10px;
           font-weight: 700;
-          font-family: 'IBM Plex Sans', sans-serif;
+          font-family: 'Public Sans', sans-serif;
           padding: 2px 7px;
           border-radius: 4px;
           white-space: nowrap;
           box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-          letter-spacing: 0.2px;
         ">You are here</div>
       </div>
     `,
@@ -146,7 +145,7 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
 
   return (
     <div className="map-card card">
-      {/* Top radar control bar matching Stitch mockup */}
+      {/* Top radar control bar */}
       <div className="map-top-bar">
         <div className="radar-status">
           <span className="radar-dot"></span>
@@ -207,10 +206,10 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
           {/* User Marker */}
           <Marker position={center} icon={createUserIcon()}>
             <Popup>
-              <div style={{ textAlign: 'center', fontFamily: "'IBM Plex Sans', sans-serif" }}>
+              <div style={{ textAlign: 'center', fontFamily: "'Public Sans', sans-serif" }}>
                 <strong style={{ fontSize: '12px' }}>Your coordinates</strong>
                 <br />
-                <small style={{ color: '#64748B' }}>{userLat.toFixed(4)}, {userLng.toFixed(4)}</small>
+                <small style={{ color: '#585E6C' }}>{userLat.toFixed(4)}, {userLng.toFixed(4)}</small>
               </div>
             </Popup>
           </Marker>
@@ -219,7 +218,7 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
           {hospitals.map((h) => {
             const isOSM = h.source === 'osm';
             const isFull = h.availability === 'Full';
-            const statusLabel = isOSM ? 'Community-sourced' : isFull ? 'At Capacity' : h.availability;
+            const statusLabel = isOSM ? 'Community' : isFull ? 'At capacity' : h.availability;
 
             return (
               <Marker
@@ -228,11 +227,11 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
                 icon={createStatusIcon(h.availability, h.source)}
               >
                 <Popup>
-                  <div style={{ fontFamily: "'IBM Plex Sans', sans-serif", minWidth: '180px' }}>
-                    <strong style={{ fontSize: '13px', color: '#1E293B', display: 'block', marginBottom: '2px' }}>
+                  <div style={{ fontFamily: "'Public Sans', sans-serif", minWidth: '180px' }}>
+                    <strong style={{ fontSize: '13px', color: '#1C1F26', display: 'block', marginBottom: '2px' }}>
                       {h.name}
                     </strong>
-                    <div style={{ fontSize: '11px', color: '#64748B', marginBottom: '6px' }}>
+                    <div style={{ fontSize: '11px', color: '#585E6C', marginBottom: '6px' }}>
                       {h.distance} km &bull; ~{h.etaMinutes} min away
                     </div>
                     <div style={{
@@ -240,10 +239,10 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
                       padding: '2px 8px',
                       borderRadius: '4px',
                       fontSize: '10px',
-                      fontWeight: 700,
-                      background: isOSM ? '#F1F5F9' : isFull ? '#FEF2F2' : h.availability === 'Limited' ? '#FFFBEB' : '#ECFDF5',
-                      color: isOSM ? '#475569' : isFull ? '#DC2626' : h.availability === 'Limited' ? '#D97706' : '#059669',
-                      border: `1px solid ${isOSM ? '#CBD5E1' : isFull ? '#FECACA' : h.availability === 'Limited' ? '#FDE68A' : '#A7F3D0'}`,
+                      fontWeight: 600,
+                      background: isOSM ? '#F2F3FD' : isFull ? '#FDF0F0' : h.availability === 'Limited' ? '#FEF6E7' : '#EBF7EE',
+                      color: isOSM ? '#585E6C' : isFull ? '#C53030' : h.availability === 'Limited' ? '#B7791F' : '#2F855A',
+                      border: `1px solid ${isOSM ? '#D5D5CD' : isFull ? '#C53030' : h.availability === 'Limited' ? '#B7791F' : '#2F855A'}`,
                       marginBottom: '8px'
                     }}>
                       {statusLabel}
@@ -256,9 +255,9 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
                             flex: 1,
                             textAlign: 'center',
                             padding: '4px 8px',
-                            background: '#F1F5F9',
-                            color: '#1E293B',
-                            border: '1px solid #CBD5E1',
+                            background: '#FFFFFF',
+                            color: '#1C1F26',
+                            border: '1px solid #D5D5CD',
                             borderRadius: '4px',
                             fontSize: '11px',
                             fontWeight: 600,
@@ -276,9 +275,9 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
                             flex: 1,
                             textAlign: 'center',
                             padding: '4px 8px',
-                            background: '#F1F5F9',
-                            color: '#1E293B',
-                            border: '1px solid #CBD5E1',
+                            background: '#FFFFFF',
+                            color: '#1C1F26',
+                            border: '1px solid #D5D5CD',
                             borderRadius: '4px',
                             fontSize: '11px',
                             fontWeight: 600,
@@ -315,7 +314,7 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
         </MapContainer>
       </div>
 
-      {/* Legend and copyright bar matching Stitch */}
+      {/* Legend and copyright bar */}
       <div className="map-bottom-bar">
         <div className="map-legend">
           <span className="legend-item">
@@ -332,10 +331,10 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
           </span>
           <span className="legend-item">
             <span className="legend-dot" style={{ background: STATUS_COLORS.Community }}></span>
-            Community-sourced
+            Community
           </span>
           <span className="legend-item">
-            <span className="legend-dot" style={{ background: '#2563EB' }}></span>
+            <span className="legend-dot" style={{ background: '#1D4E89' }}></span>
             You
           </span>
         </div>
@@ -346,19 +345,19 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
         .map-card {
           padding: 0;
           overflow: hidden;
-          border-radius: var(--radius-xl);
-          border: 1px solid var(--border-subtle);
-          background: var(--surface-card);
-          box-shadow: var(--shadow-md);
+          border-radius: var(--radius-lg);
+          border: 1px solid var(--border-structural);
+          background: var(--surface-plain);
+          box-shadow: var(--shadow-tier1);
         }
 
         .map-top-bar {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 10px 14px;
-          background: var(--surface-card);
-          border-bottom: 1px solid var(--border-subtle);
+          padding: var(--space-sm) var(--space-lg);
+          background: var(--surface-plain);
+          border-bottom: 1px solid var(--border-structural);
         }
 
         .radar-status {
@@ -371,15 +370,14 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: #2563EB;
-          box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+          background: var(--primary);
+          box-shadow: 0 0 0 2px rgba(29, 78, 137, 0.25);
         }
 
         .radar-text {
-          font-size: 0.75rem;
-          font-weight: 700;
-          color: var(--text-ink);
-          letter-spacing: -0.01em;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          color: var(--ink-primary);
         }
 
         .map-controls {
@@ -394,25 +392,25 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
           justify-content: center;
           height: 26px;
           padding: 0 8px;
-          background: var(--surface-card);
-          border: 1px solid var(--border-subtle);
-          border-radius: var(--radius-sm);
+          background: var(--surface-plain);
+          border: 1px solid var(--border-structural);
+          border-radius: var(--radius-default);
           font-size: 0.6875rem;
           font-weight: 600;
-          color: var(--text-ink);
+          color: var(--ink-primary);
           cursor: pointer;
           transition: all var(--transition-fast);
           font-family: inherit;
         }
 
         .ctrl-btn:hover {
-          background: #F1F5F9;
-          border-color: #CBD5E1;
+          background: var(--canvas-base);
+          border-color: #B5B5AD;
         }
 
         .ctrl-recenter {
           font-size: 0.6875rem;
-          color: var(--action-primary);
+          color: var(--primary);
           padding: 0 10px;
         }
 
@@ -425,16 +423,16 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 8px 14px;
-          background: var(--surface-card);
-          border-top: 1px solid var(--border-subtle);
+          padding: var(--space-sm) var(--space-lg);
+          background: var(--surface-plain);
+          border-top: 1px solid var(--border-structural);
           font-size: 0.6875rem;
         }
 
         .map-legend {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: var(--space-md);
           flex-wrap: wrap;
         }
 
@@ -442,7 +440,7 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
           display: flex;
           align-items: center;
           gap: 5px;
-          color: var(--text-secondary);
+          color: var(--ink-muted);
           font-weight: 500;
         }
 
@@ -453,8 +451,8 @@ export default function HospitalMap({ hospitals, userLat, userLng }) {
         }
 
         .map-osm-credit {
-          color: var(--text-muted);
-          font-size: 0.625rem;
+          color: var(--ink-muted);
+          font-size: 0.6875rem;
         }
 
         @media (max-width: 600px) {

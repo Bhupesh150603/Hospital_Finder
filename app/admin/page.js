@@ -143,12 +143,12 @@ export default function AdminPage() {
         {/* Eyebrow badge */}
         <div className="admin-eyebrow fade-in" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span className="live-sync-pill">
-            <span className="live-dot-pulse"></span>
-            Live Sync Enabled
+            <span className="live-dot-indicator"></span>
+            Live sync enabled
           </span>
           <button
             onClick={() => signOut({ callbackUrl: '/admin/login' })}
-            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '0.8125rem', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
+            className="signout-btn"
           >
             Sign out
           </button>
@@ -168,7 +168,7 @@ export default function AdminPage() {
             <div className="metric-card metric-available">
               <div className="metric-num-box num-box-available">{statusCounts.Available}</div>
               <div className="metric-info">
-                <span className="metric-label label-available">AVAILABLE</span>
+                <span className="metric-label label-available">Available</span>
                 <span className="metric-sub">Beds ready</span>
               </div>
             </div>
@@ -176,7 +176,7 @@ export default function AdminPage() {
             <div className="metric-card metric-limited">
               <div className="metric-num-box num-box-limited">{statusCounts.Limited}</div>
               <div className="metric-info">
-                <span className="metric-label label-limited">LIMITED</span>
+                <span className="metric-label label-limited">Limited</span>
                 <span className="metric-sub">&lt; 5 ICU left</span>
               </div>
             </div>
@@ -184,7 +184,7 @@ export default function AdminPage() {
             <div className="metric-card metric-full">
               <div className="metric-num-box num-box-full">{statusCounts.Full}</div>
               <div className="metric-info">
-                <span className="metric-label label-full">FULL</span>
+                <span className="metric-label label-full">Full</span>
                 <span className="metric-sub">Diversion only</span>
               </div>
             </div>
@@ -205,7 +205,7 @@ export default function AdminPage() {
             />
           </div>
           <div className="admin-meta-info">
-            <span>Region: <strong>National Capital Region (Delhi NCR)</strong></span>
+            <span>Hospitals tracked: <strong>{hospitals.length}</strong></span>
             <span className="meta-sep">&bull;</span>
             <span>Last verified: <strong>Just now</strong></span>
           </div>
@@ -278,7 +278,7 @@ export default function AdminPage() {
                     <div className="admin-card-right">
                       {/* CURRENT STATE column */}
                       <div className="state-col">
-                        <span className="col-header-label">CURRENT STATE</span>
+                        <span className="col-header-label">Current state</span>
                         <span className={`state-pill state-pill-${h.availability.toLowerCase()}`}>
                           <span className={`state-dot state-dot-${h.availability.toLowerCase()}`}></span>
                           {h.availability}
@@ -287,7 +287,7 @@ export default function AdminPage() {
 
                       {/* UPDATE STATUS column */}
                       <div className="update-col">
-                        <span className="col-header-label">UPDATE STATUS</span>
+                        <span className="col-header-label">Update status</span>
                         <div className="status-toggle-group">
                           {STATUSES.map((status) => {
                             const isActive = h.availability === status;
@@ -351,7 +351,7 @@ export default function AdminPage() {
       <style jsx>{`
         .admin-page {
           padding-top: var(--space-xl);
-          padding-bottom: var(--space-3xl);
+          padding-bottom: 4rem;
           min-height: calc(100vh - var(--header-height));
         }
 
@@ -359,25 +359,36 @@ export default function AdminPage() {
           margin-bottom: var(--space-xs);
         }
 
+        .signout-btn {
+          background: none;
+          border: none;
+          color: var(--ink-muted);
+          font-size: 0.8125rem;
+          font-weight: 500;
+          cursor: pointer;
+          text-decoration: underline;
+          padding: 0;
+          font-family: inherit;
+        }
+
         .live-sync-pill {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          padding: 4px 10px;
-          background: #F0FFF4;
-          border: 1px solid #C6F6D5;
-          border-radius: var(--radius-full);
+          padding: var(--space-xs) var(--space-md);
+          background: var(--status-available-bg);
+          border: 1px solid var(--status-available-border);
+          border-radius: var(--radius-default);
           font-size: 0.6875rem;
           font-weight: 600;
           color: var(--status-available);
         }
 
-        .live-dot-pulse {
+        .live-dot-indicator {
           width: 6px;
           height: 6px;
           border-radius: 50%;
           background: var(--status-available);
-          box-shadow: 0 0 0 2px rgba(47, 133, 90, 0.2);
         }
 
         .admin-header-row {
@@ -385,7 +396,7 @@ export default function AdminPage() {
           justify-content: space-between;
           align-items: flex-start;
           gap: var(--space-xl);
-          margin-bottom: var(--space-lg);
+          margin-bottom: var(--space-xl);
           flex-wrap: wrap;
         }
 
@@ -395,24 +406,25 @@ export default function AdminPage() {
         }
 
         .admin-title {
-          font-size: 1.625rem;
+          font-size: 1.5rem;
           font-weight: 700;
-          color: var(--text-ink);
-          letter-spacing: -0.02em;
-          margin-bottom: 4px;
+          line-height: 2rem;
+          color: var(--ink-primary);
+          margin-bottom: var(--space-xs);
         }
 
         .admin-subtitle {
-          color: var(--text-secondary);
+          color: var(--ink-muted);
           font-size: 0.8125rem;
           max-width: 580px;
-          line-height: 1.45;
+          line-height: 1.125rem;
+          font-weight: 400;
         }
 
         /* Metric cards */
         .metric-cards {
           display: flex;
-          gap: var(--space-md);
+          gap: var(--space-lg);
           flex-wrap: wrap;
         }
 
@@ -420,11 +432,11 @@ export default function AdminPage() {
           display: flex;
           align-items: center;
           gap: var(--space-sm);
-          padding: 8px 14px;
-          background: var(--surface-card);
+          padding: var(--space-sm) var(--space-lg);
+          background: var(--surface-plain);
           border-radius: var(--radius-lg);
-          border: 1px solid var(--border-subtle);
-          box-shadow: var(--shadow-sm);
+          border: 1px solid var(--border-structural);
+          box-shadow: var(--shadow-tier1);
         }
 
         .metric-num-box {
@@ -433,10 +445,11 @@ export default function AdminPage() {
           justify-content: center;
           width: 32px;
           height: 32px;
-          border-radius: var(--radius-md);
-          font-size: 0.875rem;
+          border-radius: var(--radius-default);
+          font-size: 0.9375rem;
           font-weight: 700;
           color: white;
+          font-variant-numeric: tabular-nums;
         }
 
         .num-box-available {
@@ -458,8 +471,7 @@ export default function AdminPage() {
 
         .metric-label {
           font-size: 0.6875rem;
-          font-weight: 700;
-          letter-spacing: 0.5px;
+          font-weight: 600;
         }
 
         .label-available {
@@ -474,7 +486,8 @@ export default function AdminPage() {
 
         .metric-sub {
           font-size: 0.6875rem;
-          color: var(--text-muted);
+          color: var(--ink-muted);
+          font-weight: 400;
         }
 
         /* Toolbar */
@@ -482,8 +495,8 @@ export default function AdminPage() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          gap: var(--space-md);
-          margin-bottom: var(--space-lg);
+          gap: var(--space-lg);
+          margin-bottom: var(--space-xl);
           flex-wrap: wrap;
         }
 
@@ -491,16 +504,21 @@ export default function AdminPage() {
           display: flex;
           align-items: center;
           gap: 8px;
-          background: var(--surface-card);
-          border: 1px solid var(--border-subtle);
-          border-radius: var(--radius-md);
+          background: var(--surface-plain);
+          border: 1px solid var(--border-structural);
+          border-radius: var(--radius-default);
           padding: 7px 12px;
           width: 320px;
-          box-shadow: var(--shadow-sm);
+          box-shadow: var(--shadow-tier1);
+        }
+
+        .search-filter-box:focus-within {
+          border-color: var(--primary);
+          box-shadow: 0 0 0 2px rgba(29, 78, 137, 0.12);
         }
 
         .search-filter-icon {
-          color: var(--text-muted);
+          color: var(--ink-muted);
           flex-shrink: 0;
         }
 
@@ -510,45 +528,46 @@ export default function AdminPage() {
           background: transparent;
           font-size: 0.8125rem;
           font-family: inherit;
-          color: var(--text-ink);
+          color: var(--ink-primary);
           width: 100%;
         }
 
         .search-filter-input::placeholder {
-          color: var(--text-muted);
+          color: var(--ink-muted);
         }
 
         .admin-meta-info {
-          font-size: 0.75rem;
-          color: var(--text-muted);
+          font-size: 0.8125rem;
+          color: var(--ink-muted);
           display: flex;
           align-items: center;
           gap: 6px;
+          font-weight: 400;
         }
 
         .admin-meta-info strong {
-          color: var(--text-ink);
+          color: var(--ink-primary);
           font-weight: 600;
         }
 
         .meta-sep {
-          color: var(--border-subtle);
+          color: var(--border-structural);
         }
 
         /* Hospital Cards List */
         .admin-list {
           display: flex;
           flex-direction: column;
-          gap: var(--space-md);
+          gap: var(--space-lg);
         }
 
         .admin-card {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: var(--space-md) var(--space-lg);
-          border-radius: var(--radius-xl);
-          gap: var(--space-lg);
+          padding: var(--space-lg) var(--space-xl);
+          border-radius: var(--radius-lg);
+          gap: var(--space-xl);
           transition: opacity var(--transition-fast), background var(--transition-fast);
         }
 
@@ -572,19 +591,20 @@ export default function AdminPage() {
         }
 
         .admin-card-name {
-          font-size: 0.9375rem;
-          font-weight: 700;
-          color: var(--text-ink);
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--ink-primary);
           margin: 0;
         }
 
         .facility-type-pill {
           padding: 2px 8px;
-          background: #F1F3F5;
-          color: var(--text-secondary);
-          border-radius: var(--radius-sm);
+          background: var(--canvas-base);
+          color: var(--ink-muted);
+          border-radius: var(--radius-default);
           font-size: 0.6875rem;
           font-weight: 500;
+          border: 1px solid var(--border-subtle);
         }
 
         .admin-card-specialties {
@@ -595,10 +615,10 @@ export default function AdminPage() {
 
         .admin-spec-pill {
           padding: 2px 8px;
-          background: #F0F4F8;
-          color: var(--action-primary);
-          border: 1px solid #D8E2EC;
-          border-radius: var(--radius-sm);
+          background: rgba(29, 78, 137, 0.06);
+          color: var(--primary);
+          border: 1px solid rgba(29, 78, 137, 0.15);
+          border-radius: var(--radius-default);
           font-size: 0.6875rem;
           font-weight: 500;
         }
@@ -606,30 +626,32 @@ export default function AdminPage() {
         .admin-card-meta {
           display: flex;
           align-items: center;
-          gap: var(--space-md);
-          font-size: 0.75rem;
-          color: var(--text-secondary);
+          gap: var(--space-lg);
+          font-size: 0.8125rem;
+          color: var(--ink-muted);
           flex-wrap: wrap;
           margin-top: 2px;
+          font-weight: 400;
         }
 
         .admin-phone-pill {
           display: inline-flex;
           align-items: center;
           gap: 4px;
-          color: var(--text-ink);
+          color: var(--ink-primary);
           font-weight: 500;
           padding: 2px 6px;
-          border-radius: var(--radius-xs);
-          border: 1px solid var(--border-subtle);
-          background: #F9FAFB;
+          border-radius: var(--radius-default);
+          border: 1px solid var(--border-structural);
+          background: var(--canvas-base);
+          font-variant-numeric: tabular-nums;
         }
 
         .admin-updated-pill {
           display: inline-flex;
           align-items: center;
           gap: 4px;
-          color: var(--text-muted);
+          color: var(--ink-muted);
         }
 
         .admin-op-note {
@@ -637,7 +659,7 @@ export default function AdminPage() {
         }
 
         .op-note-success {
-          color: var(--text-secondary);
+          color: var(--ink-muted);
         }
 
         .op-note-warning {
@@ -664,20 +686,18 @@ export default function AdminPage() {
         }
 
         .col-header-label {
-          font-size: 0.625rem;
-          font-weight: 700;
-          color: var(--text-muted);
-          letter-spacing: 0.5px;
-          text-transform: uppercase;
+          font-size: 0.6875rem;
+          font-weight: 600;
+          color: var(--ink-muted);
         }
 
         .state-pill {
           display: inline-flex;
           align-items: center;
           gap: 5px;
-          padding: 4px 10px;
-          border-radius: var(--radius-full);
-          font-size: 0.75rem;
+          padding: var(--space-xs) var(--space-md);
+          border-radius: var(--radius-default);
+          font-size: 0.8125rem;
           font-weight: 600;
         }
 
@@ -717,28 +737,28 @@ export default function AdminPage() {
         /* Toggle Button Group */
         .status-toggle-group {
           display: flex;
-          background: #F1F3F5;
+          background: var(--canvas-base);
           padding: 3px;
-          border-radius: var(--radius-md);
-          border: 1px solid var(--border-subtle);
+          border-radius: var(--radius-default);
+          border: 1px solid var(--border-structural);
           gap: 2px;
         }
 
         .status-toggle-btn {
           border: none;
           background: transparent;
-          font-size: 0.75rem;
+          font-size: 0.8125rem;
           font-weight: 600;
-          color: var(--text-secondary);
+          color: var(--ink-muted);
           padding: 5px 12px;
-          border-radius: var(--radius-sm);
+          border-radius: var(--radius-default);
           cursor: pointer;
           transition: all var(--transition-fast);
           font-family: inherit;
         }
 
         .status-toggle-btn:hover:not(:disabled) {
-          color: var(--text-ink);
+          color: var(--ink-primary);
         }
 
         .status-toggle-btn:disabled {
@@ -749,19 +769,19 @@ export default function AdminPage() {
         .btn-active-available {
           background: var(--status-available);
           color: white;
-          box-shadow: 0 1px 2px rgba(47, 133, 90, 0.25);
+          box-shadow: var(--shadow-tier1);
         }
 
         .btn-active-limited {
           background: var(--status-limited);
           color: white;
-          box-shadow: 0 1px 2px rgba(183, 121, 31, 0.25);
+          box-shadow: var(--shadow-tier1);
         }
 
         .btn-active-full {
           background: var(--status-full);
           color: white;
-          box-shadow: 0 1px 2px rgba(197, 48, 48, 0.25);
+          box-shadow: var(--shadow-tier1);
         }
 
         /* Pagination Footer */
@@ -770,21 +790,22 @@ export default function AdminPage() {
           justify-content: space-between;
           align-items: center;
           margin-top: var(--space-xl);
-          padding-top: var(--space-md);
-          border-top: 1px solid var(--border-subtle);
+          padding-top: var(--space-lg);
+          border-top: 1px solid var(--border-structural);
           flex-wrap: wrap;
-          gap: var(--space-md);
+          gap: var(--space-lg);
         }
 
         .pagination-count {
-          font-size: 0.75rem;
-          color: var(--text-secondary);
+          font-size: 0.8125rem;
+          color: var(--ink-muted);
+          font-weight: 400;
         }
 
         .pagination-controls {
           display: flex;
           align-items: center;
-          gap: var(--space-md);
+          gap: var(--space-lg);
         }
 
         .btn-pagination {
@@ -792,20 +813,20 @@ export default function AdminPage() {
           align-items: center;
           gap: 4px;
           padding: 6px 12px;
-          font-size: 0.75rem;
+          font-size: 0.8125rem;
           font-weight: 600;
-          color: var(--text-ink);
-          background: var(--surface-card);
-          border: 1px solid var(--border-subtle);
-          border-radius: var(--radius-md);
+          color: var(--ink-primary);
+          background: var(--surface-plain);
+          border: 1px solid var(--border-structural);
+          border-radius: var(--radius-default);
           cursor: pointer;
           transition: all var(--transition-fast);
           font-family: inherit;
         }
 
         .btn-pagination:hover:not(:disabled) {
-          background: #F4F5F7;
-          border-color: #CBD0D8;
+          background: var(--canvas-base);
+          border-color: #B5B5AD;
         }
 
         .btn-pagination:disabled {
@@ -814,8 +835,8 @@ export default function AdminPage() {
         }
 
         .pagination-page-label {
-          font-size: 0.75rem;
-          color: var(--text-secondary);
+          font-size: 0.8125rem;
+          color: var(--ink-muted);
           font-weight: 500;
         }
 

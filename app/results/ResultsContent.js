@@ -92,14 +92,14 @@ export default function ResultsContent() {
           <div className="results-header-left">
             <Link href="/" className="btn btn-secondary btn-sm back-btn" id="back-btn">
               <ArrowLeft size={14} />
-              Back to Search
+              Back to search
             </Link>
             <div className="results-title-row">
               <h1 className="results-title">
                 {specialty !== 'Any' ? specialty : 'All'} hospitals
               </h1>
               {!loading && !error && (
-                <span className="results-found-badge">{hospitals.length} Found</span>
+                <span className="results-found-badge">{hospitals.length} found</span>
               )}
             </div>
             {!loading && !error && (
@@ -271,8 +271,8 @@ export default function ResultsContent() {
 
       <style jsx>{`
         .results-page {
-          padding-top: var(--space-lg);
-          padding-bottom: var(--space-3xl);
+          padding-top: var(--space-xl);
+          padding-bottom: 4rem;
           min-height: calc(100vh - var(--header-height));
         }
 
@@ -280,7 +280,7 @@ export default function ResultsContent() {
           display: flex;
           justify-content: space-between;
           align-items: flex-start;
-          gap: var(--space-lg);
+          gap: var(--space-xl);
           margin-bottom: var(--space-xl);
           flex-wrap: wrap;
         }
@@ -296,37 +296,39 @@ export default function ResultsContent() {
         }
 
         .results-title {
-          font-size: 1.75rem;
+          font-size: 1.5rem;
           font-weight: 700;
-          color: var(--text-ink);
+          line-height: 2rem;
+          color: var(--ink-primary);
         }
 
         .results-found-badge {
           display: inline-block;
           padding: 3px 10px;
           background: rgba(29, 78, 137, 0.08);
-          color: var(--action-primary);
+          color: var(--primary);
           font-size: 0.6875rem;
-          font-weight: 700;
-          border-radius: var(--radius-sm);
+          font-weight: 600;
+          border-radius: var(--radius-default);
           border: 1px solid rgba(29, 78, 137, 0.2);
           white-space: nowrap;
         }
 
         .results-count {
-          color: var(--text-muted);
-          font-size: 0.75rem;
+          color: var(--ink-muted);
+          font-size: 0.8125rem;
           margin-top: 4px;
+          font-weight: 400;
         }
         .results-count strong {
-          color: var(--text-secondary);
+          color: var(--ink-primary);
           font-weight: 600;
         }
 
         .results-controls {
           display: flex;
           align-items: center;
-          gap: var(--space-md);
+          gap: var(--space-lg);
           flex-wrap: wrap;
         }
 
@@ -345,8 +347,8 @@ export default function ResultsContent() {
           position: relative;
           width: 38px;
           height: 20px;
-          background: #D1D5DB;
-          border-radius: var(--radius-full);
+          background: var(--border-structural);
+          border-radius: var(--radius-xl);
           transition: all var(--transition-fast);
           flex-shrink: 0;
         }
@@ -369,9 +371,9 @@ export default function ResultsContent() {
           transform: translateX(18px);
         }
         .priority-label {
-          font-size: 0.75rem;
+          font-size: 0.8125rem;
           font-weight: 600;
-          color: var(--text-secondary);
+          color: var(--ink-muted);
           white-space: nowrap;
         }
 
@@ -379,20 +381,20 @@ export default function ResultsContent() {
         .view-toggle {
           display: flex;
           gap: 2px;
-          background: #F0F1F3;
+          background: var(--canvas-base);
           padding: 3px;
-          border-radius: var(--radius-md);
-          border: 1px solid var(--border-subtle);
+          border-radius: var(--radius-default);
+          border: 1px solid var(--border-structural);
         }
         .vt-btn {
           display: inline-flex;
           align-items: center;
           gap: 4px;
           padding: 5px 12px;
-          border-radius: var(--radius-sm);
+          border-radius: var(--radius-default);
           font-size: 0.6875rem;
           font-weight: 600;
-          color: var(--text-muted);
+          color: var(--ink-muted);
           background: transparent;
           border: none;
           cursor: pointer;
@@ -400,32 +402,32 @@ export default function ResultsContent() {
           font-family: inherit;
         }
         .vt-btn:hover {
-          color: var(--text-ink);
+          color: var(--ink-primary);
         }
         .vt-active {
-          background: var(--surface-card);
-          color: var(--text-ink);
-          box-shadow: var(--shadow-sm);
+          background: var(--surface-plain);
+          color: var(--ink-primary);
+          box-shadow: var(--shadow-tier1);
         }
 
         /* Grid view */
         .results-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-          gap: var(--space-md);
+          gap: var(--space-lg);
         }
 
         /* Split view */
         .split-view {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: var(--space-lg);
+          gap: var(--space-xl);
           align-items: start;
         }
         .split-cards {
           display: flex;
           flex-direction: column;
-          gap: var(--space-md);
+          gap: var(--space-lg);
           max-height: calc(100vh - 180px);
           overflow-y: auto;
           padding-right: var(--space-sm);
@@ -437,12 +439,12 @@ export default function ResultsContent() {
           background: transparent;
         }
         .split-cards::-webkit-scrollbar-thumb {
-          background: var(--border-subtle);
+          background: var(--border-structural);
           border-radius: 2px;
         }
         .split-map {
           position: sticky;
-          top: calc(var(--header-height) + var(--space-lg));
+          top: calc(var(--header-height) + var(--space-xl));
         }
 
         /* Map full view */
@@ -453,16 +455,16 @@ export default function ResultsContent() {
         /* Fallback section */
         .fallback-section {
           margin-top: var(--space-xl);
-          padding-top: var(--space-lg);
-          border-top: 1px dashed var(--border-subtle);
+          padding-top: var(--space-xl);
+          border-top: 1px dashed var(--border-structural);
           width: 100%;
         }
         .fallback-banner {
-          background: #FFFBEB;
-          border: 1px solid #FDE68A;
-          border-radius: var(--radius-md);
-          padding: var(--space-md);
-          margin-bottom: var(--space-md);
+          background: var(--status-limited-bg);
+          border: 1px solid var(--status-limited-border);
+          border-radius: var(--radius-default);
+          padding: var(--space-lg);
+          margin-bottom: var(--space-lg);
         }
         .fallback-banner-header {
           display: flex;
@@ -470,24 +472,25 @@ export default function ResultsContent() {
           gap: var(--space-xs);
         }
         :global(.fallback-icon) {
-          color: #D97706;
+          color: var(--status-limited);
           flex-shrink: 0;
         }
         .fallback-title {
-          font-size: 0.9375rem;
-          font-weight: 700;
-          color: #92400E;
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--status-limited);
           margin: 0;
         }
         .fallback-subtitle {
           font-size: 0.8125rem;
-          color: #B45309;
+          color: var(--ink-muted);
           margin-top: 4px;
+          font-weight: 400;
         }
         .fallback-card-list {
           display: flex;
           flex-direction: column;
-          gap: var(--space-md);
+          gap: var(--space-lg);
         }
 
         @media (max-width: 900px) {
@@ -508,7 +511,8 @@ export default function ResultsContent() {
             flex-direction: column;
           }
           .results-title {
-            font-size: 1.35rem;
+            font-size: 1.25rem;
+            line-height: 1.75rem;
           }
           .results-controls {
             width: 100%;
@@ -525,7 +529,7 @@ function EmptyResults({ specialty }) {
     <div className="empty-state">
       <div className="empty-icon"><Hospital size={32} /></div>
       <p>No hospitals found for &quot;{specialty}&quot; specialty near your location.</p>
-      <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+      <p style={{ fontSize: '0.8125rem', color: 'var(--ink-muted)', marginTop: '0.5rem' }}>
         Try selecting a different specialty or &quot;Any&quot; to see all nearby hospitals.
       </p>
       <Link href="/" className="btn btn-primary" style={{ marginTop: '1rem' }}>
