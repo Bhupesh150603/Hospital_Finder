@@ -35,7 +35,7 @@ function pickRepresentative(hospitalSpecialties: SpecialtyRow[] | undefined) {
   };
 }
 
-/** GET /api/admin — list ONLY the logged-in admin's own hospital */
+/** GET /api/admin — the logged-in admin's own hospital, with per-specialty detail and recent activity */
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
@@ -43,42 +43,47 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const hospitals = await prisma.hospital.findMany({
+    const hospital = await prisma.hospital.findUnique({
       where: { id: session.user.hospitalId },
       include: { specialties: { include: { specialty: true } } },
-      orderBy: { name: 'asc' },
     });
 
-    const shaped = hospitals.map((h) => {
-      const specialties = h.specialties.map((hs) => ({
+    if (!hospital) {
+      return NextResponse.json({ error: 'Hospital not found' }, { status: 404 });
+    }
+
+    const specialties = hospital.specialties
+      .map((hs) => ({
+        id: hs.id,
         name: hs.specialty.name,
         availability: hs.availabilityStatus,
         lastUpdated: hs.lastUpdated,
-      }));
-      const rep = pickRepresentative(h.specialties);
-      return {
-        id: h.id,
-        name: h.name,
-        phone: h.phone,
-        availability: rep.availability,
-        lastUpdated: rep.lastUpdated,
-        specialties,
-      };
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    const recentHistory = await prisma.availabilityHistory.findMany({
+      where: { hospitalSpecialty: { hospitalId: session.user.hospitalId } },
+      include: { hospitalSpecialty: { include: { specialty: true } } },
+      orderBy: { changedAt: 'desc' },
+      take: 10,
     });
 
-    return NextResponse.json({ hospitals: shaped });
+    const activity = recentHistory.map((h) => ({
+      specialty: h.hospitalSpecialty.specialty.name,
+      previousStatus: h.previousStatus,
+      newStatus: h.newStatus,
+      changedAt: h.changedAt,
+    }));
+
+    return NextResponse.json({
+      hospital: { id: hospital.id, name: hospital.name, phone: hospital.phone },
+      specialties,
+      activity,
+    });
   } catch (err) {
     console.error('GET /api/admin error:', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}
-
-interface PatchBody {
-  id?: string;
-  hospitalId?: string;
-  availability?: string;
-  status?: string;
-  specialty?: string;
 }
 
 /** PATCH /api/admin — update availability, ONLY for the hospital the logged-in admin owns */
